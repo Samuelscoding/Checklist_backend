@@ -1,4 +1,4 @@
-package com.asc.jira.ext.core;
+package com.example;
 
 public interface Authenticator {
 
