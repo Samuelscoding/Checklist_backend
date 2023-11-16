@@ -17,7 +17,13 @@ public class App
 
         try {
 
-            Javalin app = Javalin.create().start(5500);
+            Javalin app = Javalin.create(config -> {
+                config.plugins.enableCors(cors -> {
+                    cors.add(it -> {
+                        it.allowHost("http://localhost:3000/");
+                    });
+                });
+            }).start(5500);
             
             Authenticator authenticator = new LDAPAuthenticator();
             
