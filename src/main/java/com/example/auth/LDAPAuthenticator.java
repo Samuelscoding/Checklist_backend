@@ -1,4 +1,4 @@
-package com.example;
+package com.example.auth;
 
 import com.google.gson.Gson;
 import org.slf4j.Logger;
