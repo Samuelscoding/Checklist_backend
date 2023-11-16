@@ -17,7 +17,7 @@ public class App
 
         try {
 
-            Javalin app = Javalin.create().start(7000);
+            Javalin app = Javalin.create().start(5500);
             
             Authenticator authenticator = new LDAPAuthenticator();
             
