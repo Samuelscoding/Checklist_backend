@@ -31,6 +31,11 @@ public class App
             
             app.post("/login", authController::login);
 
+            app.exception(Exception.class, (e, ctx) -> {
+                e.printStackTrace();
+                ctx.status(500).json("Internal Server Error");
+            });
+
         } catch (IOException e) {
 
             e.printStackTrace();
