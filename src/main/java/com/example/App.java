@@ -21,6 +21,7 @@ public class App
                 config.plugins.enableCors(cors -> {
                     cors.add(it -> {
                         it.allowHost("http://localhost:3000/");
+                        it.allowCredentials = true;
                     });
                 });
             }).start(5500);
