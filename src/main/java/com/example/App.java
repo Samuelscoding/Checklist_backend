@@ -30,7 +30,7 @@ public class App
             
             AuthController authController = new AuthController(authenticator);
             
-            app.post("/login", ctx -> {
+            app.post("/", ctx -> {
                 System.out.println("Received login request");
                 authController.login(ctx);
             });

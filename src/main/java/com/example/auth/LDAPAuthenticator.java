@@ -38,8 +38,8 @@ public class LDAPAuthenticator implements Authenticator {
             }
         } else {
             this.config = new LDAPConfig(
-                    "s.savasta@asc.de",
-                    "JodTb745#s+f",
+                    "IT-AD_READ@asctech.de",
+                    "read_AD",
                     "ldap://secureldap.asctech.de:636/",
                     "(&(objectClass=user)(mail=<user>))",
                     "dc=asctech,dc=de");
@@ -61,11 +61,14 @@ public class LDAPAuthenticator implements Authenticator {
 
     private DirContext requireAdmin() {
         try {
+            System.out.println(this.config.getUsername() + this.config.getPassword());
+
             return new InitialDirContext(this.createEnvironment(
                     this.config.getUsername(),
                     this.config.getPassword()
             ));
         } catch (NamingException e) {
+            e.printStackTrace();
             throw new IllegalStateException("LDAP admin authentication failed", e);
         }
     }
