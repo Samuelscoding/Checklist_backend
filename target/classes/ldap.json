@@ -1,6 +1,6 @@
 {
-    "username": "",
-    "password": "",
+    "username": "s.savasta@asc.de",
+    "password": "JodTb745#s+f",
     "url": "ldap://secureldap.astech.de:636/",
     "filter": "(&(objectClass=user)(mail=<user>))",
     "searchName": "dc=asctech,dc=de"

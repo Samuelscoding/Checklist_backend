@@ -38,8 +38,8 @@ public class LDAPAuthenticator implements Authenticator {
             }
         } else {
             this.config = new LDAPConfig(
-                    "",
-                    "",
+                    "s.savasta@asc.de",
+                    "JodTb745#s+f",
                     "ldap://secureldap.asctech.de:636/",
                     "(&(objectClass=user)(mail=<user>))",
                     "dc=asctech,dc=de");
