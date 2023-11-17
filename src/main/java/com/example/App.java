@@ -30,7 +30,11 @@ public class App
             
             AuthController authController = new AuthController(authenticator);
             
-            app.post("/login", authController::login);
+            app.post("/login", ctx -> {
+                System.out.println("Received login request");
+                authController.login(ctx);
+            });
+
 
             app.exception(Exception.class, (e, ctx) -> {
                 e.printStackTrace();

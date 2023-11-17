@@ -25,6 +25,7 @@ public class AuthController {
             ctx.sessionAttribute("currentUser", user);
             ctx.status(200).json("Login erfolgreich");
         } else {
+            
             ctx.status(401).json("Login fehlgeschlagen");
         }
     }
