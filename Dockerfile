@@ -5,8 +5,8 @@ ENV LDAP_CERTIFICATE_PASS="changeit"
 
 WORKDIR /example
 
-COPY ./target/authentication-0.0.1.jar ./authentication-0.0.1.jar
+COPY ./target/app.jar ./app.jar
 
 EXPOSE 5500
 
-CMD ["java", "-jar", "authentication-0.0.1.jar"]
+CMD ["java", "-jar", "app.jar"]
