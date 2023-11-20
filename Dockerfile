@@ -7,6 +7,6 @@ WORKDIR /example
 
 COPY ./target/authentication-0.0.1.jar ./authentication-0.0.1.jar
 
-EXPOSE 7000
+EXPOSE 5500
 
 CMD ["java", "-jar", "authentication-0.0.1.jar"]
