@@ -1,13 +1,12 @@
 FROM openjdk:22-ea-jdk
 
-ENV LDAP_CERTIFICATE="./certificate.cer"
-ENV LDAP_CERTIFICATE_PASS="changeit"
-
 WORKDIR /example
+
+USER root
+COPY ./certificate.cer /example/certificate.cer
+RUN keytool -import -alias ldap -file /Users/savasta/projects/Checklist_project/Backend/certificate.cer -keystore /etc/ssl/certs/java/cacerts -trustcacerts -storepass changeit -noprompt
+USER savasta
 
 COPY ./target/app.jar ./app.jar
 CMD ["java", "-jar", "app.jar"]
 
-COPY ./docker-entrypoint.sh ./docker-entrypoint.sh
-RUN ["chmod", "+x", "./docker-entrypoint.sh"]
-ENTRYPOINT [ "docker-entrypoint,sh" ]
