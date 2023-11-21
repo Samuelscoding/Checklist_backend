@@ -49,7 +49,7 @@ public class ChecklistDAO {
                 preparedStatement.setInt(1, item.getNumber());
                 preparedStatement.setString(2, item.getTask());
                 preparedStatement.setString(3, item.getDepartment());
-                preparedStatement.setString(4, item.getPerson);
+                preparedStatement.setString(4, item.getPerson());
                 preparedStatement.setDate(5, java.sql.Date.valueOf(item.getPlannedDate()));
                 preparedStatement.setDate(6, java.sql.Date.valueOf(item.getCompletedDate()));
                 preparedStatement.setString(7, item.getSignature());
