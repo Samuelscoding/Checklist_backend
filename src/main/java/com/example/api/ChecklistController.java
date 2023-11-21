@@ -3,7 +3,7 @@ package com.example.api;
 import com.example.db.ChecklistDAO;
 import com.example.db.ChecklistItem;
 
-import io.javalin.http.Context;
+//import io.javalin.http.Context;
 import io.javalin.http.Handler;
 
 import java.util.List;

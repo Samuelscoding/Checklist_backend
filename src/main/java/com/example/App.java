@@ -35,6 +35,10 @@ public class App
                 authController.login(ctx);
             });
 
+            ChecklistController checklistController  = new ChecklistController();
+            app.get("/api/checklist", checklistController.getChecklistItems);
+            app.post("/api/checklist", checklistController.addItemToChecklist);
+
 
             app.exception(Exception.class, (e, ctx) -> {
                 e.printStackTrace();
