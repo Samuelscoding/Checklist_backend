@@ -1,6 +1,8 @@
 package com.example.api;
 
 import com.example.db.ChecklistDAO;
+import com.example.db.ChecklistItem;
+
 import io.javalin.http.Context;
 import io.javalin.http.Handler;
 
@@ -12,14 +14,14 @@ public class ChecklistController {
 
     public Handler getChecklistItems = ctx -> {
 
-        List<String> checklistItems = checklistDAO.getChecklistItems();
+        List<ChecklistItem> checklistItems = checklistDAO.getChecklistItems();
         ctx.json(checklistItems);
     };
 
     public Handler addItemToChecklist = ctx -> {
         
-        String item = ctx.formParam("item");
-        checklistDAO.addItemToChecklist(item);
+        ChecklistItem newItem = ctx.bodyAsClass(ChecklistItem.class);
+        checklistDAO.addItemToChecklist(newItem);
         ctx.status(201);
     };
     
