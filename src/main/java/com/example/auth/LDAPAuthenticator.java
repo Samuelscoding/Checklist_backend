@@ -73,6 +73,14 @@ public class LDAPAuthenticator implements Authenticator {
         }
     }
 
+    private User createDummyUser(){
+        String dummyToken = "dummyToken";
+        String dummyUsername = "dummyUser";
+        String dummyMail = "dummy@example.com";
+
+        return new User(dummyToken, dummyUsername, dummyMail);
+    }
+
     @Override
     public User getLoggedIn(String loginToken) {
         return this.users.get(loginToken);
@@ -118,17 +126,18 @@ public class LDAPAuthenticator implements Authenticator {
                             (String) attributes.get("userPrincipalName").get(),
                             (String) attributes.get("mail").get()
                     );
+                    return createDummyUser();
                 } catch (AuthenticationException ignored) {
                 }
             }
 
             searchResults.close();
             adminContext.close();
-
+/* 
             if (user != null) {
                 this.users.put(user.getLoginToken(), user);
             }
-
+*/
             return user;
         } catch (NamingException e) {
             if (!(e instanceof PartialResultException)) {
