@@ -20,7 +20,7 @@ public class ChecklistDAO {
                 while (resultSet.next()) {
                     ChecklistItem item = new ChecklistItem(
                         resultSet.getInt("id"),
-                        resultSet.getInt("number"),
+                        resultSet.getFloat("number"),
                         resultSet.getString("task"),
                         resultSet.getString("department"),
                         resultSet.getString("person"),
@@ -46,7 +46,7 @@ public class ChecklistDAO {
         
             PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO checklist (number, task, department, person, planned_date, completed_date, signature) VALUES (?,?,?,?,?,?,?,?)")) {
 
-                preparedStatement.setInt(1, item.getNumber());
+                preparedStatement.setFloat(1, item.getNumber());
                 preparedStatement.setString(2, item.getTask());
                 preparedStatement.setString(3, item.getDepartment());
                 preparedStatement.setString(4, item.getPerson());

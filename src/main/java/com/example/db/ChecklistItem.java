@@ -5,7 +5,7 @@ import java.time.LocalDate;
 public class ChecklistItem {
 
     private final int id;
-    private final int number;
+    private final float number;
     private final String task;
     private final String department;
     private final String person;
@@ -13,7 +13,7 @@ public class ChecklistItem {
     private final LocalDate completedDate;
     private final String signature;
 
-    public ChecklistItem(int id, int number, String task, String department, String person, LocalDate plannedDate, LocalDate completedDate, String signature){
+    public ChecklistItem(int id, float number, String task, String department, String person, LocalDate plannedDate, LocalDate completedDate, String signature){
         this.id = id;
         this.number = number;
         this.task = task;
@@ -27,7 +27,7 @@ public class ChecklistItem {
         return this.id;
     }
 
-    public int getNumber(){
+    public float getNumber(){
         return this.number;
     }
 
