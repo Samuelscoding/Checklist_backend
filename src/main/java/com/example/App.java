@@ -37,7 +37,7 @@ public class App
 
             ChecklistController checklistController  = new ChecklistController();
             app.get("/api/checklist", checklistController.getChecklistItems);
-            //app.post("/api/checklist", checklistController.addItemToChecklist);
+            app.post("/api/checklist/addTask", checklistController.addItemToChecklist);
 
 
             app.exception(Exception.class, (e, ctx) -> {
