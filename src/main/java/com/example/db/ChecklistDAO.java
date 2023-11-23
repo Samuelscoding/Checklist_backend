@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,9 +51,24 @@ public class ChecklistDAO {
                 preparedStatement.setString(2, item.getTask());
                 preparedStatement.setString(3, item.getDepartment());
                 preparedStatement.setString(4, item.getPerson());
-                preparedStatement.setDate(5, java.sql.Date.valueOf(item.getPlannedDate()));
-                preparedStatement.setDate(6, java.sql.Date.valueOf(item.getCompletedDate()));
-                preparedStatement.setString(7, item.getSignature());
+
+                if(item.getPlannedDate() != null) {
+                    preparedStatement.setDate(5, java.sql.Date.valueOf(item.getPlannedDate()));
+                } else {
+                    preparedStatement.setNull(5, Types.DATE);
+                }
+
+                if(item.getCompletedDate() != null) {
+                    preparedStatement.setDate(6, java.sql.Date.valueOf(item.getCompletedDate()));
+                } else {
+                    preparedStatement.setNull(6, Types.DATE);
+                }
+
+                if(item.getSignature() != null && !item.getSignature().isEmpty()) {
+                    preparedStatement.setString(7, item.getSignature());
+                } else {
+                    preparedStatement.setNull(7, Types.VARCHAR);
+                }
 
                 preparedStatement.executeUpdate();
             } catch (SQLException e) {
