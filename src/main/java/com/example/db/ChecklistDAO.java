@@ -45,7 +45,7 @@ public class ChecklistDAO {
 
         try (Connection connection = DatabaseConnector.getConnection(); 
         
-            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO checklist (number, task, department, person, planned_date, completed_date, signature) VALUES (?,?,?,?,?,?,?,?)")) {
+            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO checklist (number, task, department, person, planned_date, completed_date, signature) VALUES (?,?,?,?,?,?,?)")) {
 
                 preparedStatement.setFloat(1, item.getNumber());
                 preparedStatement.setString(2, item.getTask());
