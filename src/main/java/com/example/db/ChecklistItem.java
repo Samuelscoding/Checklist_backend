@@ -13,6 +13,17 @@ public class ChecklistItem {
     private final LocalDate completedDate;
     private final String signature;
 
+    public ChecklistItem(){
+        this.id = 0;
+        this.number = 0;
+        this.task = "";
+        this.department = "";
+        this.person = "";
+        this.plannedDate = null;
+        this.completedDate = null;
+        this.signature = "";
+    }
+
     public ChecklistItem(int id, float number, String task, String department, String person, LocalDate plannedDate, LocalDate completedDate, String signature){
         this.id = id;
         this.number = number;
