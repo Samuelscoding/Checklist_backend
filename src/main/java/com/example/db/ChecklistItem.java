@@ -73,4 +73,12 @@ public class ChecklistItem {
             return "";
         }
     }
+
+    public String getFormattedCompletedDate(){
+        if(completedDate != null) {
+            return completedDate.toString();
+        } else {
+            return "";
+        }
+    }
 }
