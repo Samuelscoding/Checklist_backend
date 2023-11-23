@@ -28,9 +28,9 @@ public class ChecklistDAO {
                         resultSet.getString("person"),
                         resultSet.getDate("planned_date").toLocalDate(),
                         resultSet.getDate("completed_date").toLocalDate(),
-                        resultSet.getString("signature")
-//                        resultSet.getString("colorClass_pv"),
-//                        resultSet.getString("colorClass_rv")
+                        resultSet.getString("signature"),
+                        resultSet.getString("colorClass_pv"),
+                        resultSet.getString("colorClass_rv")
                     );
                     checklistItems.add(item);
                 }
@@ -48,7 +48,7 @@ public class ChecklistDAO {
 
         try (Connection connection = DatabaseConnector.getConnection(); 
         
-            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO checklist (number, task, department, person, planned_date, completed_date, signature) VALUES (?,?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS)) {
+            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO checklist (number, task, department, person, planned_date, completed_date, signature, colorclass_pv, colorclass_rv) VALUES (?,?,?,?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS)) {
 
                 preparedStatement.setFloat(1, item.getNumber());
                 preparedStatement.setString(2, item.getTask());
