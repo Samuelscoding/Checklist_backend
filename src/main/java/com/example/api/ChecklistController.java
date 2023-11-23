@@ -21,7 +21,9 @@ public class ChecklistController {
     public Handler addItemToChecklist = ctx -> {
         
         ChecklistItem newItem = ctx.bodyAsClass(ChecklistItem.class);
-        checklistDAO.addItemToChecklist(newItem);
+        boolean isPreliminary = ctx.formParamAsClass("isPreliminary", Boolean.class).getOrDefault(false);
+        boolean isRelease = ctx.formParamAsClass("isRelease", Boolean.class).getOrDefault(false);
+        checklistDAO.addItemToChecklist(newItem, isPreliminary, isRelease);
         ctx.status(201).json(newItem);
     };
     

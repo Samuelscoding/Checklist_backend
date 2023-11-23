@@ -12,8 +12,8 @@ public class ChecklistItem {
     private final LocalDate plannedDate;
     private final LocalDate completedDate;
     private final String signature;
-    private final String colorClass_pv;
-    private final String colorClass_rv;
+    private String colorClass_pv;
+    private String colorClass_rv;
 
     public ChecklistItem(){
         this.id = 0;
@@ -28,7 +28,7 @@ public class ChecklistItem {
         this.colorClass_rv = "";
     }
 
-    public ChecklistItem(int id, float number, String task, String department, String person, LocalDate plannedDate, LocalDate completedDate, String signature, String colorClass_pv, String colorClass_rv){
+    public ChecklistItem(int id, float number, String task, String department, String person, LocalDate plannedDate, LocalDate completedDate, String signature){
         this.id = id;
         this.number = number;
         this.task = task;
@@ -37,8 +37,8 @@ public class ChecklistItem {
         this.plannedDate = plannedDate;
         this.completedDate = completedDate;
         this.signature = signature;
-        this.colorClass_pv = colorClass_pv;
-        this.colorClass_rv = colorClass_rv;
+        this.colorClass_pv = "";
+        this.colorClass_rv = "";
     }
     public int getId(){
         return this.id;
@@ -100,8 +100,10 @@ public class ChecklistItem {
     }
 
     public void setColorClass_rv(String string) {
+        this.colorClass_pv = colorClass_pv;
     }
 
     public void setColorClass_pv(String string) {
+        this.colorClass_rv = colorClass_rv;
     }
 }

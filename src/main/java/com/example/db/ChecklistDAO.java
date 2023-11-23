@@ -28,9 +28,9 @@ public class ChecklistDAO {
                         resultSet.getString("person"),
                         resultSet.getDate("planned_date").toLocalDate(),
                         resultSet.getDate("completed_date").toLocalDate(),
-                        resultSet.getString("signature"),
-                        resultSet.getString("colorClass_pv"),
-                        resultSet.getString("colorClass_rv")
+                        resultSet.getString("signature")
+//                        resultSet.getString("colorClass_pv"),
+//                        resultSet.getString("colorClass_rv")
                     );
                     checklistItems.add(item);
                 }
