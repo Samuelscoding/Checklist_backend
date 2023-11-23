@@ -22,7 +22,7 @@ public class ChecklistController {
         
         ChecklistItem newItem = ctx.bodyAsClass(ChecklistItem.class);
         checklistDAO.addItemToChecklist(newItem);
-        ctx.status(201);
+        ctx.status(201).json(newItem);
     };
     
 }

@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +46,7 @@ public class ChecklistDAO {
 
         try (Connection connection = DatabaseConnector.getConnection(); 
         
-            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO checklist (number, task, department, person, planned_date, completed_date, signature) VALUES (?,?,?,?,?,?,?)")) {
+            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO checklist (number, task, department, person, planned_date, completed_date, signature) VALUES (?,?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS)) {
 
                 preparedStatement.setFloat(1, item.getNumber());
                 preparedStatement.setString(2, item.getTask());
@@ -71,6 +72,12 @@ public class ChecklistDAO {
                 }
 
                 preparedStatement.executeUpdate();
+
+                ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
+                if (generatedKeys.next()) {
+                    int generateId = generatedKeys.getInt(1);
+                    item.setId(generateId);
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }

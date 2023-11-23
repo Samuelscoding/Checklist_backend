@@ -81,4 +81,7 @@ public class ChecklistItem {
             return "";
         }
     }
+
+    public void setId(int generateId) {
+    }
 }
