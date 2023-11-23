@@ -66,4 +66,11 @@ public class ChecklistItem {
         return this.signature;
     }
 
+    public String getFormattedPlannedDate(){
+        if(plannedDate != null){
+            return plannedDate.toString();
+        } else {
+            return "";
+        }
+    }
 }
