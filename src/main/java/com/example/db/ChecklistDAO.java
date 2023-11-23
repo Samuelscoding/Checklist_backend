@@ -44,7 +44,7 @@ public class ChecklistDAO {
 
     }
     
-    public void addItemToChecklist(ChecklistItem item) {
+    public void addItemToChecklist(ChecklistItem item, boolean isPreliminary, boolean isRelease) {
 
         try (Connection connection = DatabaseConnector.getConnection(); 
         
@@ -72,6 +72,21 @@ public class ChecklistDAO {
                 } else {
                     preparedStatement.setNull(7, Types.VARCHAR);
                 }
+
+                if(isPreliminary) {
+                    item.setColorClass_pv("blue-row");
+                } else {
+                    item.setColorClass_pv("");
+                }
+
+                if (isRelease) {
+                    item.setColorClass_rv("cyan-row");
+                } else {
+                    item.setColorClass_rv("");
+                }
+
+                preparedStatement.setString(8, item.getColorClass_pv());
+                preparedStatement.setString(9, item.getColorClass_rv());
 
                 preparedStatement.executeUpdate();
 

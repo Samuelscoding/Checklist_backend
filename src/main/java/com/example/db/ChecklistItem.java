@@ -98,4 +98,10 @@ public class ChecklistItem {
 
     public void setId(int generateId) {
     }
+
+    public void setColorClass_rv(String string) {
+    }
+
+    public void setColorClass_pv(String string) {
+    }
 }
