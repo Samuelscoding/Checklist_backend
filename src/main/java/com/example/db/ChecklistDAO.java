@@ -28,9 +28,7 @@ public class ChecklistDAO {
                         resultSet.getString("person"),
                         resultSet.getDate("planned_date").toLocalDate(),
                         resultSet.getDate("completed_date").toLocalDate(),
-                        resultSet.getString("signature"),
-                        resultSet.getString("colorClass_pv"),
-                        resultSet.getString("colorClass_rv")
+                        resultSet.getString("signature")
                     );
                     checklistItems.add(item);
                 }
@@ -44,11 +42,11 @@ public class ChecklistDAO {
 
     }
     
-    public void addItemToChecklist(ChecklistItem item, boolean isPreliminary, boolean isRelease) {
+    public void addItemToChecklist(ChecklistItem item) {
 
         try (Connection connection = DatabaseConnector.getConnection(); 
         
-            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO checklist (number, task, department, person, planned_date, completed_date, signature, colorclass_pv, colorclass_rv) VALUES (?,?,?,?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS)) {
+            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO checklist (number, task, department, person, planned_date, completed_date, signature) VALUES (?,?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS)) {
 
                 preparedStatement.setFloat(1, item.getNumber());
                 preparedStatement.setString(2, item.getTask());
@@ -72,21 +70,6 @@ public class ChecklistDAO {
                 } else {
                     preparedStatement.setNull(7, Types.VARCHAR);
                 }
-
-                if(isPreliminary) {
-                    item.setColorClass_pv("blue-row");
-                } else {
-                    item.setColorClass_pv("");
-                }
-
-                if (isRelease) {
-                    item.setColorClass_rv("cyan-row");
-                } else {
-                    item.setColorClass_rv("");
-                }
-
-                preparedStatement.setString(8, item.getColorClass_pv());
-                preparedStatement.setString(9, item.getColorClass_rv());
 
                 preparedStatement.executeUpdate();
 
