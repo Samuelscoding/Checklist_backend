@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 public class ChecklistItem {
 
-    private final int id;
+    private int id;
     private final float number;
     private final String task;
     private final String department;
@@ -96,7 +96,9 @@ public class ChecklistItem {
         }
     }
 
-    public void setId(int generateId) {
+    public void setId(int id) {
+    
+        this.id = id;
     }
 
 }

@@ -76,12 +76,16 @@ public class ChecklistDAO {
                 preparedStatement.setString(8, item.getColorClass_pv());
                 preparedStatement.setString(9, item.getColorClass_rv());
 
-                preparedStatement.executeUpdate();
+                int rowsAffected = preparedStatement.executeUpdate();
 
-                ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
-                if (generatedKeys.next()) {
-                    int generateId = generatedKeys.getInt(1);
-                    item.setId(generateId);
+                if (rowsAffected > 0) {
+
+                    ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
+                    if (generatedKeys.next()) {
+                        int generateId = generatedKeys.getInt(1);
+                        item.setId(generateId);
+
+                    }
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
