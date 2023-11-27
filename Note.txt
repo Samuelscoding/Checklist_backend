@@ -1,1 +1,3 @@
 Reihen färben noch nicht möglich
+Nummern werden nicht andauernd um 0.1 erhöht
+Button-Erscheinen noch nicht richtig funktionsfähig
