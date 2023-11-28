@@ -24,5 +24,12 @@ public class ChecklistController {
         checklistDAO.addItemToChecklist(newItem);
         ctx.status(201).json(newItem);
     };
+
+    public Handler deleteItemFromChecklist = ctx -> {
+
+        int taskId = ctx.pathParamAsClass("taskId", Integer.class).get();
+        checklistDAO.deleteItemFromChecklist(taskId);
+        ctx.status(204);
+    };
     
 }

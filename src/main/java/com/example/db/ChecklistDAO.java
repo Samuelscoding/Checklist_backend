@@ -91,4 +91,17 @@ public class ChecklistDAO {
                 e.printStackTrace();
             }
     }
+
+    public void deleteItemFromChecklist(int taskId) {
+
+        try (Connection connection = DatabaseConnector.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM checklist WHERE id = ?")) {
+
+            preparedStatement.setInt(1, taskId);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+
+            e.printStackTrace();
+        }
+    }
 }
