@@ -1,11 +1,13 @@
 package com.example.db;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,8 +28,8 @@ public class ChecklistDAO {
                         resultSet.getString("task"),
                         resultSet.getString("department"),
                         resultSet.getString("person"),
-                        resultSet.getDate("planned_date").toLocalDate(),
-                        resultSet.getDate("completed_date").toLocalDate(),
+                        getDateOrNull(resultSet, "planned_date"),
+                        getDateOrNull(resultSet, "completed_date"),
                         resultSet.getString("signature"),
                         resultSet.getString("colorClass_pv"),
                         resultSet.getString("colorClass_rv")
@@ -103,5 +105,49 @@ public class ChecklistDAO {
 
             e.printStackTrace();
         }
+    }
+
+    public void updateItemInChecklist(ChecklistItem upatedItem) {
+
+        try(Connection connection = DatabaseConnector.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                "UPDATE checklist SET task=?, department=?, person=?, planned_date=?, completed_date=?, signature=? WHERE id=?")) {
+
+                    preparedStatement.setString(1, upatedItem.getTask());
+                    preparedStatement.setString(2, upatedItem.getDepartment());
+                    preparedStatement.setString(3, upatedItem.getPerson());
+
+                    if(upatedItem.getPlannedDate() != null) {
+                        preparedStatement.setDate(4, java.sql.Date.valueOf(upatedItem.getPlannedDate()));
+                    } else {
+                        preparedStatement.setNull(4, Types.DATE);
+                    }
+
+                    if(upatedItem.getCompletedDate() != null) {
+                        preparedStatement.setDate(5, java.sql.Date.valueOf(upatedItem.getCompletedDate()));
+                    } else {
+                        preparedStatement.setNull(5, Types.DATE);
+                    }
+
+                    if(upatedItem.getSignature() != null && !upatedItem.getSignature().isEmpty()) {
+                        preparedStatement.setString(6, upatedItem.getSignature());
+                    } else {
+                        preparedStatement.setNull(6, Types.VARCHAR);
+                    }
+
+                    preparedStatement.setInt(7, upatedItem.getId());
+
+                    preparedStatement.executeUpdate();
+
+            } catch(SQLException e) {
+
+                e.printStackTrace();
+            }
+    }
+
+    private LocalDate getDateOrNull(ResultSet resultSet, String columnName) throws SQLException {
+
+        Date date = resultSet.getDate(columnName);
+        return (date != null) ? date.toLocalDate() : null;
     }
 }

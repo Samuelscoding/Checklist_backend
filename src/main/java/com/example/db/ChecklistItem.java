@@ -1,7 +1,9 @@
 package com.example.db;
 
 import java.time.LocalDate;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ChecklistItem {
 
     private int id;

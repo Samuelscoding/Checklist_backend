@@ -1,1 +1,4 @@
 Nummer fixen: Nach 1.10 -> 1.11 | Nach Löschen Nummern ändern 1.4 - gelöscht - 1.6 -> 1.4 - 1.5
+
+completedDate muss leer sein
+

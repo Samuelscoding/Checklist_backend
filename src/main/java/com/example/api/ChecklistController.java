@@ -31,5 +31,12 @@ public class ChecklistController {
         checklistDAO.deleteItemFromChecklist(taskId);
         ctx.status(204);
     };
+
+    public Handler updateItemInChecklist = ctx -> {
+
+        ChecklistItem updatedItem = ctx.bodyAsClass(ChecklistItem.class);
+        checklistDAO.updateItemInChecklist(updatedItem);
+        ctx.status(200).json(updatedItem);
+    };
     
 }
