@@ -24,7 +24,6 @@ public class ChecklistDAO {
                 while (resultSet.next()) {
                     ChecklistItem item = new ChecklistItem(
                         resultSet.getInt("id"),
-                        resultSet.getFloat("number"),
                         resultSet.getString("task"),
                         resultSet.getString("department"),
                         resultSet.getString("person"),
@@ -50,9 +49,8 @@ public class ChecklistDAO {
 
         try (Connection connection = DatabaseConnector.getConnection(); 
         
-            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO checklist (number, task, department, person, planned_date, completed_date, signature, colorClass_pv, colorClass_rv) VALUES (?,?,?,?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS)) {
-
-                preparedStatement.setFloat(1, item.getNumber());
+            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO checklist (task, department, person, planned_date, completed_date, signature, colorClass_pv, colorClass_rv) VALUES (?,?,?,?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS)) {
+                
                 preparedStatement.setString(2, item.getTask());
                 preparedStatement.setString(3, item.getDepartment());
                 preparedStatement.setString(4, item.getPerson());

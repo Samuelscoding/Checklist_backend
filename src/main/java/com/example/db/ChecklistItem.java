@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class ChecklistItem {
 
     private int id;
-    private final float number;
     private final String task;
     private final String department;
     private final String person;
@@ -19,7 +18,6 @@ public class ChecklistItem {
 
     public ChecklistItem() {
         this.id = 0;
-        this.number = 0;
         this.task = "";
         this.department = "";
         this.person = "";
@@ -30,9 +28,8 @@ public class ChecklistItem {
         this.colorClass_rv = "";
     }
 
-    public ChecklistItem(int id, float number, String task, String department, String person, LocalDate plannedDate, LocalDate completedDate, String signature, String colorClass_pv, String colorClass_rv){
+    public ChecklistItem(int id, String task, String department, String person, LocalDate plannedDate, LocalDate completedDate, String signature, String colorClass_pv, String colorClass_rv){
         this.id = id;
-        this.number = number;
         this.task = task;
         this.department = department;
         this.person = person;
@@ -44,10 +41,6 @@ public class ChecklistItem {
     }
     public int getId(){
         return this.id;
-    }
-
-    public float getNumber(){
-        return this.number;
     }
 
     public String getTask(){

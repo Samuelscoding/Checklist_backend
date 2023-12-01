@@ -1,4 +1,4 @@
-Nummer fixen: Nach 1.10 -> 1.11 | Nach Löschen Nummern ändern 1.4 - gelöscht - 1.6 -> 1.4 - 1.5
+Manche Spalten sollten zentriert werden z.B. Unterschrift
 
 Checkboxen für mehreres Löschen -> Bei einer Auswahl beide Knöpfe erscheinen
                                 -> Bei mehrere Auswahlen nur "Task löschen"-Knopf da
@@ -6,3 +6,4 @@ Checkboxen für mehreres Löschen -> Bei einer Auswahl beide Knöpfe erscheinen
 Task bearbeiten: -> Alternative zu watch (Datum füllt sich wieder)
                  -> Datum wird nicht in Datenbank gespeichert
                  -> Bei Änderung der Tabelle ändert sich nicht das Modal
+                 -> Verhindern, dass bei Bestätigen, Task nach unten befördert wird (Soll auf selben Platz bleiben)
