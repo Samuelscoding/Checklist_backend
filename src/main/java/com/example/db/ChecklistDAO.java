@@ -31,7 +31,8 @@ public class ChecklistDAO {
                         getDateOrNull(resultSet, "completed_date"),
                         resultSet.getString("signature"),
                         resultSet.getString("colorClass_pv"),
-                        resultSet.getString("colorClass_rv")
+                        resultSet.getString("colorClass_rv"),
+                        resultSet.getString("category")
                     );
                     checklistItems.add(item);
                 }
@@ -49,7 +50,7 @@ public class ChecklistDAO {
 
         try (Connection connection = DatabaseConnector.getConnection(); 
         
-            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO checklist (task, department, person, planned_date, completed_date, signature, colorClass_pv, colorClass_rv) VALUES (?,?,?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS)) {
+            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO checklist (task, department, person, planned_date, completed_date, signature, colorClass_pv, colorClass_rv, category) VALUES (?,?,?,?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS)) {
                 
                 preparedStatement.setString(1, item.getTask());
                 preparedStatement.setString(2, item.getDepartment());
@@ -75,6 +76,12 @@ public class ChecklistDAO {
 
                 preparedStatement.setString(7, item.getColorClass_pv());
                 preparedStatement.setString(8, item.getColorClass_rv());
+
+                if(item.getCategory() != null) {
+                    preparedStatement.setString(9, item.getCategory());
+                } else {
+                    preparedStatement.setNull(9, Types.VARCHAR);
+                }
 
                 int rowsAffected = preparedStatement.executeUpdate();
 
@@ -109,7 +116,7 @@ public class ChecklistDAO {
 
         try(Connection connection = DatabaseConnector.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(
-                "UPDATE checklist SET task=?, department=?, person=?, planned_date=?, completed_date=?, signature=? WHERE id=?")) {
+                "UPDATE checklist SET task=?, department=?, person=?, planned_date=?, completed_date=?, signature=? category=? WHERE id=?")) {
 
                     preparedStatement.setString(1, upatedItem.getTask());
                     preparedStatement.setString(2, upatedItem.getDepartment());
@@ -132,8 +139,14 @@ public class ChecklistDAO {
                     } else {
                         preparedStatement.setNull(6, Types.VARCHAR);
                     }
+                    
+                    if(upatedItem.getCategory() != null) {
+                        preparedStatement.setString(7, upatedItem.getCategory());
+                    } else {
+                        preparedStatement.setNull(7, Types.VARCHAR);
+                    }                    
 
-                    preparedStatement.setInt(7, upatedItem.getId());
+                    preparedStatement.setInt(8, upatedItem.getId());
 
                     preparedStatement.executeUpdate();
 

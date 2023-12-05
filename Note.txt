@@ -1,9 +1,5 @@
-Manche Spalten sollten zentriert werden z.B. Unterschrift
+Task bearbeiten: -> Datumsformatierung im Modal muss noch hinzugefügt werden
 
-Checkboxen für mehreres Löschen -> Bei einer Auswahl beide Knöpfe erscheinen
-                                -> Bei mehrere Auswahlen nur "Task löschen"-Knopf da
+Mögliche Suchleiste, um Aufgaben besser zu finden
 
-Task bearbeiten: -> Alternative zu watch (Datum füllt sich wieder)
-                 -> Datum wird nicht in Datenbank gespeichert
-                 -> Bei Änderung der Tabelle ändert sich nicht das Modal
-                 -> Verhindern, dass bei Bestätigen, Task nach unten befördert wird (Soll auf selben Platz bleiben)
+Tabelle: -> Bei hovern über Aufgaben, jeweilige Farbe ändern
