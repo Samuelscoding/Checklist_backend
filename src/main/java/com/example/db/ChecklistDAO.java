@@ -116,7 +116,7 @@ public class ChecklistDAO {
 
         try(Connection connection = DatabaseConnector.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(
-                "UPDATE checklist SET task=?, department=?, person=?, planned_date=?, completed_date=?, signature=? category=? WHERE id=?")) {
+                "UPDATE checklist SET task=?, department=?, person=?, planned_date=?, completed_date=?, signature=?, category=? WHERE id=?")) {
 
                     preparedStatement.setString(1, upatedItem.getTask());
                     preparedStatement.setString(2, upatedItem.getDepartment());

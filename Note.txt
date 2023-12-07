@@ -2,4 +2,7 @@ Task bearbeiten: -> Datumsformatierung im Modal muss noch hinzugefügt werden
 
 Mögliche Suchleiste, um Aufgaben besser zu finden
 
-Tabelle: -> Bei hovern über Aufgaben, jeweilige Farbe ändern
+Tabelle: -> Erledigungspunkte-Spalte sollte ein Limit haben, dass Tabelle sich nicht verlängert
+         -> Überschriftsreihen sind fix und sollten nicht den Platz ändern
+
+Automatische Vervollständigung 
