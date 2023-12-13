@@ -6,4 +6,4 @@ Automatische Vervollständigung
 
 Darkmode-Funktion muss eingebaut werden
 
-Calls über Nuxt proxien
+Calls über Nuxt proxien -> DELETE funktioniert noch nicht
