@@ -29,4 +29,20 @@ public class AuthController {
             ctx.status(401).json("Login fehlgeschlagen");
         }
     }
+
+    public void logout(Context ctx) {
+        ctx.sessionAttribute("currentUser", null);
+        ctx.status(200).json("Logout erfolgreich");
+    }
+/* 
+    public static void options(Context ctx) {
+        String origin = ctx.header("Origin");
+        ctx.status(200).header("Access-Control-Allow-Methods", "POST, OPTIONS")
+                            .header("Access-Control-Allow-Headers", "Content-Type, Authorization")
+                            .header("Access-Control-Allow-Credentials", "true")
+                            .header("Access-Control-Allow-Origin", origin)
+                            .header("Access-Control-Max-Age", "86400")
+                            .json("");
+    }
+*/    
 }

@@ -1,8 +1,9 @@
-Task bearbeiten: -> Datumsformatierung im Modal muss noch hinzugefügt werden
+Task bearbeiten: -> Datumsformatierung im Modal muss noch hinzugefügt werden => Teilweise gefixt
 
 Mögliche Suchleiste, um Aufgaben besser zu finden
 
-Tabelle: -> Erledigungspunkte-Spalte sollte ein Limit haben, dass Tabelle sich nicht verlängert
-         -> Überschriftsreihen sind fix und sollten nicht den Platz ändern
-
 Automatische Vervollständigung 
+
+Darkmode-Funktion muss eingebaut werden
+
+Calls über Nuxt proxien

@@ -22,6 +22,7 @@ public class App
                     cors.add(it -> {
                         it.anyHost();
                         it.allowCredentials = true;
+                        it.allowedOrigins();
                     });
                 });
             }).start(5500);
@@ -29,18 +30,34 @@ public class App
             Authenticator authenticator = new LDAPAuthenticator();
             
             AuthController authController = new AuthController(authenticator);
-            
-            app.post("/", ctx -> {
+/*
+            // CORS-Header manuell für alle Anfragen setzen
+            app.before(ctx -> {
+                ctx.header("Access-Control-Allow-Origin", ctx.header("Origin"));
+                ctx.header("Access-Control-Allow-Credentials", "true");
+                ctx.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+            });
+
+            // Handle Preflight-Anfragen
+            app.options("/*", ctx -> {
+                ctx.status(200).json("");
+            });
+*/
+            app.post("/login", ctx -> {
                 System.out.println("Received login request");
                 authController.login(ctx);
             });
 
+            app.post("/logout", ctx -> {
+                System.out.println("Received logout request");
+                authController.logout(ctx);
+            });
+            
             ChecklistController checklistController  = new ChecklistController();
             app.get("/api/checklist", checklistController.getChecklistItems);
             app.post("/api/checklist/addTask", checklistController.addItemToChecklist);
             app.delete("/api/checklist/delete/{taskId}", checklistController.deleteItemFromChecklist);
             app.put("/api/checklist/edit/{taskId}", checklistController.updateItemInChecklist);
-
 
             app.exception(Exception.class, (e, ctx) -> {
                 e.printStackTrace();
