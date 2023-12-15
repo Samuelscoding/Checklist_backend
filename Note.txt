@@ -1,5 +1,3 @@
-Task bearbeiten: -> Datumsformatierung im Modal muss noch hinzugefügt werden => Teilweise gefixt
-
 Mögliche Suchleiste, um Aufgaben besser zu finden
 
 Automatische Vervollständigung 
