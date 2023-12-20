@@ -3,7 +3,6 @@ package com.example.api;
 import com.example.db.ChecklistDAO;
 import com.example.db.ChecklistItem;
 
-//import io.javalin.http.Context;
 import io.javalin.http.Handler;
 
 import java.util.List;
@@ -14,7 +13,16 @@ public class ChecklistController {
 
     public Handler getChecklistItems = ctx -> {
 
-        List<ChecklistItem> checklistItems = checklistDAO.getChecklistItems();
+        List<ChecklistItem> checklistItems;
+
+        String departmentFilter = ctx.queryParam("department");
+        // Überprüfen, ob ein Abteilungsfilter übergeben wurde
+        if(departmentFilter != null && !departmentFilter.isEmpty()) {
+            checklistItems = checklistDAO.getChecklistItemsByDepartment(departmentFilter);
+        } else {
+            // Wenn kein Abteilungsfilter übergeben wurde, lade volle Checklist
+            checklistItems = checklistDAO.getChecklistItems();
+        }
         ctx.json(checklistItems);
     };
 

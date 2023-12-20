@@ -41,7 +41,7 @@ public class App
                 authController.logout(ctx);
             });
             
-            ChecklistController checklistController  = new ChecklistController();
+            ChecklistController checklistController = new ChecklistController();
             app.get("/api/checklist", checklistController.getChecklistItems);
             app.post("/api/checklist/addTask", checklistController.addItemToChecklist);
             app.delete("/api/checklist/delete/{taskId}", checklistController.deleteItemFromChecklist);
