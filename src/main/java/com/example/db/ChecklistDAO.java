@@ -81,6 +81,74 @@ public class ChecklistDAO {
         return checklistItems;
 
     }
+
+    public List<ChecklistItem> getIncompleteChecklistItems() {
+        List<ChecklistItem> checklistItems = new ArrayList<>();
+
+        try(Connection connection = DatabaseConnector.getConnection();
+        
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM checklist WHERE completed_date IS NULL OR signature IS NULL")) {
+
+                ResultSet resultSet = preparedStatement.executeQuery();
+                while (resultSet.next()) {
+                    ChecklistItem item = new ChecklistItem(
+                        resultSet.getInt("id"),
+                        resultSet.getString("task"),
+                        resultSet.getString("department"),
+                        resultSet.getString("person"),
+                        getDateOrNull(resultSet, "planned_date"),
+                        getDateOrNull(resultSet, "completed_date"),
+                        resultSet.getString("signature"),
+                        resultSet.getString("colorClass_pv"),
+                        resultSet.getString("colorClass_rv"),
+                        resultSet.getString("category")
+                    );
+                    checklistItems.add(item);
+                }
+
+            } catch (SQLException e) {
+
+                e.printStackTrace();
+            }
+
+        return checklistItems;
+
+    }    
+
+    public List<ChecklistItem> getIncompleteChecklistItemsByDepartment(String department) {
+        List<ChecklistItem> checklistItems = new ArrayList<>();
+
+        try(Connection connection = DatabaseConnector.getConnection();
+        
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM checklist WHERE (completed_date IS NULL OR signature IS NULL) AND department = ?")) {
+
+                preparedStatement.setString(1, department);
+
+                ResultSet resultSet = preparedStatement.executeQuery();
+                while (resultSet.next()) {
+                    ChecklistItem item = new ChecklistItem(
+                        resultSet.getInt("id"),
+                        resultSet.getString("task"),
+                        resultSet.getString("department"),
+                        resultSet.getString("person"),
+                        getDateOrNull(resultSet, "planned_date"),
+                        getDateOrNull(resultSet, "completed_date"),
+                        resultSet.getString("signature"),
+                        resultSet.getString("colorClass_pv"),
+                        resultSet.getString("colorClass_rv"),
+                        resultSet.getString("category")
+                    );
+                    checklistItems.add(item);
+                }
+
+            } catch (SQLException e) {
+
+                e.printStackTrace();
+            }
+
+        return checklistItems;
+
+    }    
     
     public void addItemToChecklist(ChecklistItem item) {
 
