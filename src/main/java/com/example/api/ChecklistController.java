@@ -16,23 +16,36 @@ public class ChecklistController {
         List<ChecklistItem> checklistItems;
 
         String departmentFilter = ctx.queryParam("department");
+        String versionFilter = ctx.queryParam("version");
         boolean showIncompleteTasks = ctx.queryParam("showIncompleteTasks") != null;
 
-        // Überprüfen, ob ein Abteilungsfilter übergeben wurde
-        if(departmentFilter != null && !departmentFilter.isEmpty()) {
+
+        if(versionFilter != null && !versionFilter.isEmpty()) {
+            if(showIncompleteTasks) {
+                if (departmentFilter != null && !departmentFilter.isEmpty()) {
+                    checklistItems = checklistDAO.getIncompleteChecklistItemsByDepartmentAndVersion(departmentFilter, versionFilter);
+                } else {
+                    checklistItems = checklistDAO.getIncompleteChecklistItemsByVersion(versionFilter);
+                }
+            } else {
+                if (departmentFilter != null && !departmentFilter.isEmpty()) {
+                    checklistItems = checklistDAO.getChecklistItemsByDepartmentAndVersion(departmentFilter, versionFilter);
+                } else {
+                    checklistItems = checklistDAO.getChecklistItemsByVersion(versionFilter);
+                }
+            }
+        } else if(departmentFilter != null && !departmentFilter.isEmpty()) {
             if(showIncompleteTasks) {
                 checklistItems = checklistDAO.getIncompleteChecklistItemsByDepartment(departmentFilter);
             } else {
                 checklistItems = checklistDAO.getChecklistItemsByDepartment(departmentFilter);
             }
         } else {
-            // Wenn kein Abteilungsfilter übergeben wurde, lade volle Checklist
             if(showIncompleteTasks) {
                 checklistItems = checklistDAO.getIncompleteChecklistItems();
             } else {
                 checklistItems = checklistDAO.getChecklistItems();  
             }
-
         }
         ctx.json(checklistItems);
     };

@@ -16,6 +16,7 @@ public class ChecklistItem {
     public String colorClass_pv;
     public String colorClass_rv;
     private String category;
+    private String version;
 
     public ChecklistItem() {
         this.id = 0;
@@ -28,9 +29,10 @@ public class ChecklistItem {
         this.colorClass_pv = "";
         this.colorClass_rv = "";
         this.category = "";
+        this.version = "";
     }
 
-    public ChecklistItem(int id, String task, String department, String person, LocalDate plannedDate, LocalDate completedDate, String signature, String colorClass_pv, String colorClass_rv, String category){
+    public ChecklistItem(int id, String task, String department, String person, LocalDate plannedDate, LocalDate completedDate, String signature, String colorClass_pv, String colorClass_rv, String category, String version){
         this.id = id;
         this.task = task;
         this.department = department;
@@ -41,6 +43,7 @@ public class ChecklistItem {
         this.colorClass_pv = colorClass_pv;
         this.colorClass_rv = colorClass_rv;
         this.category = category;
+        this.version = version;
     }
     public int getId(){
         return this.id;
@@ -76,6 +79,10 @@ public class ChecklistItem {
 
     public String getColorClass_rv(){
         return this.colorClass_rv;
+    }
+
+    public String getVersion(){
+        return this.version;
     }
 
     public String getFormattedPlannedDate(){

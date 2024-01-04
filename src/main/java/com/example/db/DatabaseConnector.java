@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class DatabaseConnector {
     
-    private static final String JDBC_URL = "jdbc:postgresql://192.168.5.78:5432/Checklist_db";
+    private static final String JDBC_URL = "jdbc:postgresql://localhost:5432/Checklist_db";
     private static final String USERNAME = "postgres";
     private static final String PASSWORD = "postgres";
 
