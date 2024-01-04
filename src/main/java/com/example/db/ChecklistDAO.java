@@ -222,61 +222,6 @@ public class ChecklistDAO {
         return checklistItems;
 
     }   
-    
-    public void addItemToChecklist(ChecklistItem item) {
-
-        try (Connection connection = DatabaseConnector.getConnection(); 
-        
-            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO checklist (task, department, person, planned_date, completed_date, signature, colorClass_pv, colorClass_rv, category, version) VALUES (?,?,?,?,?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS)) {
-                
-                preparedStatement.setString(1, item.getTask());
-                preparedStatement.setString(2, item.getDepartment());
-                preparedStatement.setString(3, item.getPerson());
-
-                if(item.getPlannedDate() != null) {
-                    preparedStatement.setDate(4, java.sql.Date.valueOf(item.getPlannedDate()));
-                } else {
-                    preparedStatement.setNull(4, Types.DATE);
-                }
-
-                if(item.getCompletedDate() != null) {
-                    preparedStatement.setDate(5, java.sql.Date.valueOf(item.getCompletedDate()));
-                } else {
-                    preparedStatement.setNull(5, Types.DATE);
-                }
-
-                if(item.getSignature() != null && !item.getSignature().isEmpty()) {
-                    preparedStatement.setString(6, item.getSignature());
-                } else {
-                    preparedStatement.setNull(6, Types.VARCHAR);
-                }
-
-                preparedStatement.setString(7, item.getColorClass_pv());
-                preparedStatement.setString(8, item.getColorClass_rv());
-
-                if(item.getCategory() != null) {
-                    preparedStatement.setString(9, item.getCategory());
-                } else {
-                    preparedStatement.setNull(9, Types.VARCHAR);
-                }
-
-                preparedStatement.setString(10, item.getVersion());
-
-                int rowsAffected = preparedStatement.executeUpdate();
-
-                if (rowsAffected > 0) {
-
-                    ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
-                    if (generatedKeys.next()) {
-                        int generateId = generatedKeys.getInt(1);
-                        item.setId(generateId);
-
-                    }
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-    }
 
     public List<ChecklistItem> getChecklistItemsByDepartmentAndVersion(String department, String version) {
         List<ChecklistItem> checklistItems = new ArrayList<>();
@@ -346,6 +291,60 @@ public class ChecklistDAO {
         return checklistItems;
     }
     
+    public void addItemToChecklist(ChecklistItem item) {
+
+        try (Connection connection = DatabaseConnector.getConnection(); 
+        
+            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO checklist (task, department, person, planned_date, completed_date, signature, colorClass_pv, colorClass_rv, category, version) VALUES (?,?,?,?,?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS)) {
+                
+                preparedStatement.setString(1, item.getTask());
+                preparedStatement.setString(2, item.getDepartment());
+                preparedStatement.setString(3, item.getPerson());
+
+                if(item.getPlannedDate() != null) {
+                    preparedStatement.setDate(4, java.sql.Date.valueOf(item.getPlannedDate()));
+                } else {
+                    preparedStatement.setNull(4, Types.DATE);
+                }
+
+                if(item.getCompletedDate() != null) {
+                    preparedStatement.setDate(5, java.sql.Date.valueOf(item.getCompletedDate()));
+                } else {
+                    preparedStatement.setNull(5, Types.DATE);
+                }
+
+                if(item.getSignature() != null && !item.getSignature().isEmpty()) {
+                    preparedStatement.setString(6, item.getSignature());
+                } else {
+                    preparedStatement.setNull(6, Types.VARCHAR);
+                }
+
+                preparedStatement.setString(7, item.getColorClass_pv());
+                preparedStatement.setString(8, item.getColorClass_rv());
+
+                if(item.getCategory() != null) {
+                    preparedStatement.setString(9, item.getCategory());
+                } else {
+                    preparedStatement.setNull(9, Types.VARCHAR);
+                }
+
+                preparedStatement.setString(10, item.getVersion());
+
+                int rowsAffected = preparedStatement.executeUpdate();
+
+                if (rowsAffected > 0) {
+
+                    ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
+                    if (generatedKeys.next()) {
+                        int generateId = generatedKeys.getInt(1);
+                        item.setId(generateId);
+
+                    }
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+    }
 
     public void deleteItemFromChecklist(int taskId) {
 
