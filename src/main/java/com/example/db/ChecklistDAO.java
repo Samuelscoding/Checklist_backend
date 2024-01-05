@@ -13,6 +13,29 @@ import java.util.List;
 
 public class ChecklistDAO {
 
+    public List<Version> getVersions() {
+        List<Version> versions = new ArrayList<>();
+
+        try(Connection connection = DatabaseConnector.getConnection();
+            Statement statement = connection.createStatement()) {
+                ResultSet resultSet = statement.executeQuery("SELECT * FROM versions");
+
+                while(resultSet.next()){
+                    Version version = new Version(
+                        resultSet.getInt("id"),
+                        resultSet.getString("name"),
+                        resultSet.getDate("preliminaryrelease").toLocalDate(),
+                        resultSet.getDate("finalrelease").toLocalDate()
+                    );
+                    versions.add(version);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+            return versions;
+    }
+
     public List<ChecklistItem> getChecklistItems() {
         List<ChecklistItem> checklistItems = new ArrayList<>();
 
