@@ -9,6 +9,13 @@ public class Version {
     private LocalDate preliminaryrelease;
     private LocalDate finalrelease;
 
+    public Version() {
+        this.id = 0;
+        this.name = "";
+        this.preliminaryrelease = null;
+        this.finalrelease = null;
+    }
+
     public Version(int id, String name, LocalDate preliminaryrelease, LocalDate finalrelease) {
         this.id = id;
         this.name = name;
@@ -30,6 +37,10 @@ public class Version {
 
     public LocalDate getfinalrelease(){
         return this.finalrelease;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
     
 }

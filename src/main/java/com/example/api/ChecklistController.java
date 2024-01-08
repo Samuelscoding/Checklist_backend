@@ -18,6 +18,13 @@ public class ChecklistController {
         ctx.json(versions);
     };
 
+    // Handler um neue Version hinzuzufügen
+    public Handler addVersion = ctx -> {
+        Version newVersion = ctx.bodyAsClass(Version.class);
+        checklistDAO.addVersion(newVersion);
+        ctx.status(201).json(newVersion);
+    };
+
     public Handler getChecklistItems = ctx -> {
 
         List<ChecklistItem> checklistItems;

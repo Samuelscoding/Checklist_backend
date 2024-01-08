@@ -46,7 +46,9 @@ public class App
             app.post("/api/checklist/addTask", checklistController.addItemToChecklist);
             app.delete("/api/checklist/delete/{taskId}", checklistController.deleteItemFromChecklist);
             app.put("/api/checklist/edit/{taskId}", checklistController.updateItemInChecklist);
+
             app.get("/api/versions", checklistController.getVersions);
+            app.post("api/versions/addVersion", checklistController.addVersion);
 
             app.exception(Exception.class, (e, ctx) -> {
                 e.printStackTrace();

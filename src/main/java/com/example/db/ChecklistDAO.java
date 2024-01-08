@@ -13,6 +13,7 @@ import java.util.List;
 
 public class ChecklistDAO {
 
+    // Version abrufen
     public List<Version> getVersions() {
         List<Version> versions = new ArrayList<>();
 
@@ -34,6 +35,40 @@ public class ChecklistDAO {
             }
 
             return versions;
+    }
+
+    // Version hinzufügen
+    public void addVersion(Version version) {
+        try(Connection connection = DatabaseConnector.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO versions(name, preliminaryrelease, finalrelease) VALUES (?,?,?)", Statement.RETURN_GENERATED_KEYS)) {
+                preparedStatement.setString(1, version.getName());
+
+                if(version.getPreliminaryrelease() != null) {
+                    preparedStatement.setDate(2, Date.valueOf(version.getPreliminaryrelease()));
+                } else {
+                    preparedStatement.setNull(2, Types.DATE);
+                }
+
+                if(version.getfinalrelease() != null) {
+                    preparedStatement.setDate(3, Date.valueOf(version.getfinalrelease()));
+                } else {
+                    preparedStatement.setNull(3, Types.DATE);
+                }
+
+                int rowsAffected = preparedStatement.executeUpdate();
+
+                if (rowsAffected > 0) {
+
+                    ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
+                    if (generatedKeys.next()) {
+                        int generateId = generatedKeys.getInt(1);
+                        version.setId(generateId);
+
+                    }
+                }
+            } catch(SQLException e) {
+                e.printStackTrace();
+            }
     }
 
     public List<ChecklistItem> getChecklistItems() {
