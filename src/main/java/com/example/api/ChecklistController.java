@@ -12,6 +12,38 @@ public class ChecklistController {
 
     private final ChecklistDAO checklistDAO = new ChecklistDAO();
 
+    // Handler um Aufgaben zu importieren
+    public Handler importChecklistItems = ctx -> {
+        try {
+            ImportChecklistRequest importRequest = ctx.bodyAsClass(ImportChecklistRequest.class);
+            System.out.println("Received import request for version: " + importRequest.getVersion());
+            System.out.println("Number of checklist items: " + importRequest.getChecklistItems().size());
+            System.out.println("Imported Data: " + ctx.body());
+
+            String version = ctx.bodyAsClass(ImportChecklistRequest.class).getVersion();
+            List<ChecklistItem> importedItems = ctx.bodyAsClass(ImportChecklistRequest.class).getChecklistItems();
+            checklistDAO.replaceChecklistItems(version, importedItems);
+            ctx.status(200).json(importedItems);
+        } catch(Exception e) {
+            e.printStackTrace();
+            ctx.status(500).json("Error importing checklist items");
+        }
+
+    };
+
+    public static class ImportChecklistRequest {
+        private String version;
+        private List<ChecklistItem> checklistItems;
+
+        public String getVersion() {
+            return version;
+        }
+
+        public List<ChecklistItem> getChecklistItems() {
+            return checklistItems;
+        }
+    }
+
     // Handler um Version abzurufen
     public Handler getVersions = ctx -> {
         List<Version> versions = checklistDAO.getVersions();

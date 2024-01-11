@@ -71,6 +71,79 @@ public class ChecklistDAO {
             }
     }
 
+    // Ersetzt Aufgaben
+    public void replaceChecklistItems(String version, List<ChecklistItem> newItems) {
+        try(Connection connection = DatabaseConnector.getConnection()) {
+            
+            // Transaktion starten
+            connection.setAutoCommit(false);
+
+            // Existierende Aufgaben löschen
+            try(PreparedStatement deleteStatement = connection.prepareStatement("DELETE FROM checklist WHERE version = ?")) {
+                System.out.println("Alte Aufgaben löschen");
+                deleteStatement.setString(1, version);
+                deleteStatement.executeUpdate();
+            }
+
+            // Neue Aufgaben hinzufügen
+            try(PreparedStatement insertStatement = connection.prepareStatement("INSERT INTO checklist (task, department, person, planned_date, completed_date, signature, colorClass_pv, colorClass_rv, category, version) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")) {
+                for(ChecklistItem newItem : newItems) {
+                    System.out.println("Neue Aufgaben hinzufügen");
+                    insertStatement.setString(1, newItem.getTask());
+                    insertStatement.setString(2, newItem.getDepartment());
+                    insertStatement.setString(3, newItem.getPerson());
+
+                    if(newItem.getPlannedDate() != null) {
+                        insertStatement.setDate(4, java.sql.Date.valueOf(newItem.getPlannedDate()));
+                    } else {
+                        insertStatement.setNull(4, Types.DATE);
+                    }
+
+                    if(newItem.getCompletedDate() != null) {
+                        insertStatement.setDate(5, java.sql.Date.valueOf(newItem.getCompletedDate()));
+                    } else {
+                        insertStatement.setNull(5, Types.DATE);
+                    }
+
+                    if(newItem.getSignature() != null && !newItem.getSignature().isEmpty()) {
+                        insertStatement.setString(6, newItem.getSignature());
+                    } else {
+                        insertStatement.setNull(6, Types.VARCHAR);
+                    }
+
+                    insertStatement.setString(7, newItem.getColorClass_pv());
+                    insertStatement.setString(8, newItem.getColorClass_rv());
+
+                    if(newItem.getCategory() != null) {
+                        insertStatement.setString(9, newItem.getCategory());
+                    } else {
+                        insertStatement.setNull(9, Types.VARCHAR);
+                    }
+
+                    insertStatement.setString(10, version);
+
+                    System.out.println(newItem);
+
+                    insertStatement.addBatch();
+                }
+
+                // Batch nach Fehlern suchen
+                int[] batchResults = insertStatement.executeBatch();
+                for(int result : batchResults) {
+                    if(result == PreparedStatement.EXECUTE_FAILED) {
+                        throw new SQLException("Batch execution failed");
+                    }
+                }
+
+                // Transaktion commiten
+                connection.commit();
+            }
+        } catch(SQLException e) {
+            e.printStackTrace();
+
+        }
+    }
+
     public List<ChecklistItem> getChecklistItems() {
         List<ChecklistItem> checklistItems = new ArrayList<>();
 

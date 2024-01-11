@@ -47,6 +47,8 @@ public class App
             app.delete("/api/checklist/delete/{taskId}", checklistController.deleteItemFromChecklist);
             app.put("/api/checklist/edit/{taskId}", checklistController.updateItemInChecklist);
 
+            app.post("/api/checklist/import", checklistController.importChecklistItems);
+
             app.get("/api/versions", checklistController.getVersions);
             app.post("api/versions/addVersion", checklistController.addVersion);
 
