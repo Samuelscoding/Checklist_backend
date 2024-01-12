@@ -51,6 +51,7 @@ public class App
 
             app.get("/api/versions", checklistController.getVersions);
             app.post("api/versions/addVersion", checklistController.addVersion);
+            app.put("/api/version/editVersion/{id}", checklistController.editVersion);
 
             app.exception(Exception.class, (e, ctx) -> {
                 e.printStackTrace();

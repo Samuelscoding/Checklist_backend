@@ -71,6 +71,25 @@ public class ChecklistDAO {
             }
     }
 
+    // Version bearbeiten
+    public void editVersion(Version editedVersion) {
+        try (Connection connection = DatabaseConnector.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement("UPDATE versions SET name=?, preliminaryrelease=?, finalrelease=? WHERE id=?")){
+                    preparedStatement.setString(1, editedVersion.getName());
+                    preparedStatement.setDate(2, editedVersion.getPreliminaryrelease() != null ? Date.valueOf(editedVersion.getPreliminaryrelease()) : null);
+                    preparedStatement.setDate(3, editedVersion.getfinalrelease() != null ? Date.valueOf(editedVersion.getfinalrelease()) : null);
+                    preparedStatement.setInt(4, editedVersion.getId());
+
+                    int rowsAffected = preparedStatement.executeUpdate();
+
+                    if(rowsAffected == 0) {
+                        throw new SQLException("Failed to update version");
+                    }
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     // Ersetzt Aufgaben
     public void replaceChecklistItems(String version, List<ChecklistItem> newItems) {
         try(Connection connection = DatabaseConnector.getConnection()) {

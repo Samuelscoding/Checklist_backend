@@ -57,6 +57,13 @@ public class ChecklistController {
         ctx.status(201).json(newVersion);
     };
 
+    // Handler um Version zu bearbeiten
+    public Handler editVersion = ctx -> {
+        Version editedVersion = ctx.bodyAsClass(Version.class);
+        checklistDAO.editVersion(editedVersion);
+        ctx.status(200).json(editedVersion);
+    };
+
     public Handler getChecklistItems = ctx -> {
 
         List<ChecklistItem> checklistItems;
@@ -97,21 +104,18 @@ public class ChecklistController {
     };
 
     public Handler addItemToChecklist = ctx -> {
-        
         ChecklistItem newItem = ctx.bodyAsClass(ChecklistItem.class);
         checklistDAO.addItemToChecklist(newItem);
         ctx.status(201).json(newItem);
     };
 
     public Handler deleteItemFromChecklist = ctx -> {
-
         int taskId = ctx.pathParamAsClass("taskId", Integer.class).get();
         checklistDAO.deleteItemFromChecklist(taskId);
         ctx.status(204);
     };
 
     public Handler updateItemInChecklist = ctx -> {
-
         ChecklistItem updatedItem = ctx.bodyAsClass(ChecklistItem.class);
         checklistDAO.updateItemInChecklist(updatedItem);
         ctx.status(200).json(updatedItem);
