@@ -15,11 +15,6 @@ public class ChecklistController {
     // Handler um Aufgaben zu importieren
     public Handler importChecklistItems = ctx -> {
         try {
-            ImportChecklistRequest importRequest = ctx.bodyAsClass(ImportChecklistRequest.class);
-            System.out.println("Received import request for version: " + importRequest.getVersion());
-            System.out.println("Number of checklist items: " + importRequest.getChecklistItems().size());
-            System.out.println("Imported Data: " + ctx.body());
-
             String version = ctx.bodyAsClass(ImportChecklistRequest.class).getVersion();
             List<ChecklistItem> importedItems = ctx.bodyAsClass(ImportChecklistRequest.class).getChecklistItems();
             checklistDAO.replaceChecklistItems(version, importedItems);
