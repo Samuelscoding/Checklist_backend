@@ -141,8 +141,6 @@ public class ChecklistDAO {
 
                     insertStatement.setString(10, version);
 
-                    System.out.println(newItem);
-
                     insertStatement.addBatch();
                 }
 
