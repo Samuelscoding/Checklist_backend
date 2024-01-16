@@ -161,6 +161,38 @@ public class ChecklistDAO {
         }
     }
 
+    public LocalDate getPreliminaryReleaseDate(String version) {
+        try(Connection connection = DatabaseConnector.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT preliminaryrelease FROM versions WHERE name = ?")) {
+
+                preparedStatement.setString(1, version);
+                ResultSet resultSet = preparedStatement.executeQuery();
+
+                if(resultSet.next()) {
+                    return resultSet.getDate("preliminaryrelease").toLocalDate();
+                }
+            } catch(SQLException e) {
+                e.printStackTrace();
+            }
+            return null;
+    }
+
+    public LocalDate getFinalReleaseDate(String version) {
+        try(Connection connection = DatabaseConnector.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT finalrelease FROM versions WHERE name = ?")) {
+
+                preparedStatement.setString(1, version);
+                ResultSet resultSet = preparedStatement.executeQuery();
+
+                if(resultSet.next()) {
+                    return resultSet.getDate("finalrelease").toLocalDate();
+                }
+            } catch(SQLException e) {
+                e.printStackTrace();
+            }
+            return null;
+    }
+
     public List<ChecklistItem> getChecklistItems() {
         List<ChecklistItem> checklistItems = new ArrayList<>();
 

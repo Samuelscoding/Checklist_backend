@@ -10,7 +10,7 @@ public class ChecklistItem {
     private final String task;
     private final String department;
     private final String person;
-    private final LocalDate plannedDate;
+    private LocalDate plannedDate;
     private final LocalDate completedDate;
     private final String signature;
     public String colorClass_pv;
@@ -102,7 +102,6 @@ public class ChecklistItem {
     }
 
     public void setId(int id) {
-    
         this.id = id;
     }
 
@@ -110,5 +109,8 @@ public class ChecklistItem {
         return this.category;
     }
 
+    public void setPlannedDate(LocalDate plannedDate) {
+        this.plannedDate = plannedDate;
+    }
 
 }
