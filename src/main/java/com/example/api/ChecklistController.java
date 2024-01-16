@@ -28,12 +28,57 @@ public class ChecklistController {
 
     // Handler um Datum von Preliminary-Aufgaben zu berechnen
     private LocalDate calculatePreliminaryReleaseDate(ChecklistItem checklistItem, String version) {
-        return null;
+        LocalDate referenceDate;
+
+        if("Die Manuals des Manual Package (deutsch und englisch, freigegebene Version) wurden aktualisiert - Preliminary Version".equals(checklistItem.getTask()) ||
+           "Die Service Manuals (deutsch und englisch, freigegebene Version) wurden aktualisiert - Preliminary Version".equals(checklistItem.getTask()) ||
+           "Das Dokument \"Release Announcement\" liegt vor - Preliminary Version".equals(checklistItem.getTask()) ||
+           "Das Dokument \"Version Matrix\" liegt vor - Preliminary Version".equals(checklistItem.getTask()) ||
+           "Das Dokument \"Release Announcement\" wurde verteilt  - Preliminary Version".equals(checklistItem.getTask())) {
+            referenceDate = checklistDAO.getPreliminaryReleaseDate(version);
+            int daysDifference = 0;
+            return referenceDate.minusDays(daysDifference);
+
+        } else if("Die Freigabeempfehlung liegt vor - Preliminary Version".equals(checklistItem.getTask())) {
+            referenceDate = checklistDAO.getPreliminaryReleaseDate(version);
+            int daysDifference = 4;
+            return referenceDate.minusDays(daysDifference);
+
+        } else if("Die Feature-Liste wurde aktualisiert - Preliminary Version".equals(checklistItem.getTask())) {
+            referenceDate = checklistDAO.getPreliminaryReleaseDate(version);
+            int daysDifference = 2;
+            return referenceDate.minusDays(daysDifference);
+
+        } else {
+            return null;
+        }
     }
 
     // Handler um Datum von Release-Aufgaben zu berechnen
     private LocalDate calculateFinalReleaseDate(ChecklistItem checklistItem, String version) {
-        return null;
+        LocalDate referenceDate;
+
+        if("Die Manuals des Manual Package (deutsch und englisch, freigegebene Version) wurden aktualisiert - Release Version".equals(checklistItem.getTask()) ||
+           "Das Dokument \"Release Announcement\" liegt vor - Release Version".equals(checklistItem.getTask()) ||
+           "Das Dokument \"Version Matrix\" liegt vor - Release Version".equals(checklistItem.getTask()) ||
+           "Das Dokument \"Release Announcement\" wurde verteilt  - Release Version".equals(checklistItem.getTask())) {
+            referenceDate = checklistDAO.getFinalReleaseDate(version);
+            int daysDifference = 0;
+            return referenceDate.minusDays(daysDifference);
+
+        } else if("Die Feature-Liste wurde aktualisiert - Release Version".equals(checklistItem.getTask())) {
+            referenceDate = checklistDAO.getFinalReleaseDate(version);
+            int daysDifference = 7;
+            return referenceDate.minusDays(daysDifference);
+
+        } else if("Die Freigabeempfehlung liegt vor - Release Version".equals(checklistItem.getTask())) {
+            referenceDate = checklistDAO.getFinalReleaseDate(version);
+            int daysDifference = 5;
+            return referenceDate.minusDays(daysDifference);
+
+        } else {
+            return null;
+        } 
     }
 
     // Handler um Datum von normalen Aufgaben zu berechnen
@@ -65,23 +110,12 @@ public class ChecklistController {
             int daysDifference = 20;
             return referenceDate.minusDays(daysDifference);
 
-        } else if("Die Prüfpläne (System Test & Release) liegen vor".equals(checklistItem.getTask()) ||
-                  "Das Dokument \"Release Announcement\" liegt vor - Preliminary Version".equals(checklistItem.getTask()) ||
-                  "Die Manuals des Manual Package (deutsch und englisch, freigegebene Version) wurden aktualisiert - Preliminary Version".equals(checklistItem.getTask()) ||
-                  "Die Service Manuals (deutsch und englisch, freigegebene Version) wurden aktualisiert - Preliminary Version".equals(checklistItem.getTask()) ||
-                  "Das Dokument \"Version Matrix\" liegt vor - Preliminary Version".equals(checklistItem.getTask()) ||
-                  "Das Dokument \"Release Announcement\" wurde verteilt - Preliminary Version".equals(checklistItem.getTask())) {
+        } else if("Die Prüfpläne (System Test & Release) liegen vor".equals(checklistItem.getTask())) {
             referenceDate = checklistDAO.getPreliminaryReleaseDate(version);
             int daysDifference = 0;
             return referenceDate.minusDays(daysDifference);
 
-        } else if("Die Freigabeempfehlung liegt vor (Preliminary Version)".equals(checklistItem.getTask())) {
-            referenceDate = checklistDAO.getPreliminaryReleaseDate(version);
-            int daysDifference = 4;
-            return referenceDate.minusDays(daysDifference);
-
-        } else if("Sprint 1 wurde durchgeführt".equals(checklistItem.getTask()) || 
-                  "Die Feature-Liste wurde aktualisiert - Preliminary Version".equals(checklistItem.getTask())) {
+        } else if("Sprint 1 wurde durchgeführt".equals(checklistItem.getTask())) {
             referenceDate = checklistDAO.getPreliminaryReleaseDate(version);
             int daysDifference = 2;
             return referenceDate.minusDays(daysDifference);
@@ -93,7 +127,6 @@ public class ChecklistController {
 
         } else if("Die Vorlage der Test Reports für die Produktion wurde aktualisiert".equals(checklistItem.getTask()) ||
                   "Die Kompatibilitätsliste wurde aktualisiert".equals(checklistItem.getTask()) ||
-                  "Die Feature-Liste wurde aktualisiert - Release Version".equals(checklistItem.getTask()) ||
                   "Das Dokument \"Neo Integration Overview\" wurde aktualisiert".equals(checklistItem.getTask()) ||
                   "Das Dokument \"Neo Sizing Guide\" wurde aktualisiert".equals(checklistItem.getTask()) ||
                   "Die Power Point Präsentationen (deutsch und englisch) wurden aktualisiert".equals(checklistItem.getTask()) ||
@@ -106,16 +139,7 @@ public class ChecklistController {
             int daysDifference = 7;
             return referenceDate.minusDays(daysDifference);
 
-        } else if("Die Freigabeempfehlung liegt vor - Release Version".equals(checklistItem.getTask())) {
-            referenceDate = checklistDAO.getFinalReleaseDate(version);
-            int daysDifference = 5;
-            return referenceDate.minusDays(daysDifference);
-
-        } else if("Die Manuals des Manual Package (deutsch und englisch, freigegebene Version) wurden aktualisiert - Release Version".equals(checklistItem.getTask()) ||
-                  "Das Dokument \"Release Announcement\" liegt vor - Release Version".equals(checklistItem.getTask()) ||
-                  "Das Dokument \"Version Matrix\" liegt vor - Release Version".equals(checklistItem.getTask()) ||
-                  "Das Manual Package (englisch, deutsch) wurde erstellt".equals(checklistItem.getTask()) ||
-                  "Das Dokument \"Release Announcement\" wurde verteilt - Release Version".equals(checklistItem.getTask())) {
+        } else if("Das Manual Package (englisch, deutsch) wurde erstellt".equals(checklistItem.getTask())) {
             referenceDate = checklistDAO.getFinalReleaseDate(version);
             int daysDifference = 0;
             return referenceDate.minusDays(daysDifference);
