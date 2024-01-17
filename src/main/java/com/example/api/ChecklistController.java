@@ -66,7 +66,7 @@ public class ChecklistController {
             int daysDifference = 0;
             return referenceDate.minusDays(daysDifference);
 
-        } else if("Die Feature-Liste wurde aktualisiert - Release Version".equals(checklistItem.getTask())) {
+        } else if("Die Feature-Liste wurde aktualisiert  - Release Version".equals(checklistItem.getTask())) {
             referenceDate = checklistDAO.getFinalReleaseDate(version);
             int daysDifference = 7;
             return referenceDate.minusDays(daysDifference);
