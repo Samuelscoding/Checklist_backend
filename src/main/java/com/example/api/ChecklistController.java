@@ -298,9 +298,10 @@ public class ChecklistController {
 
     public Handler updateItemInChecklist = ctx -> {
         ChecklistItem updatedItem = ctx.bodyAsClass(ChecklistItem.class);
-//        LocalDate plannedDate = calculatePlannedDate(updatedItem.getTask());
-//        updatedItem.setPlannedDate(plannedDate);
+        LocalDate plannedDate = calculatePlannedDate(updatedItem, updatedItem.getVersion());
+        updatedItem.setPlannedDate(plannedDate);
         checklistDAO.updateItemInChecklist(updatedItem);
+
         ctx.status(200).json(updatedItem);
     };
 
