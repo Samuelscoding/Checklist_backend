@@ -202,19 +202,7 @@ public class ChecklistDAO {
 
                 ResultSet resultSet = preparedStatement.executeQuery();
                 while (resultSet.next()) {
-                    ChecklistItem item = new ChecklistItem(
-                        resultSet.getInt("id"),
-                        resultSet.getString("task"),
-                        resultSet.getString("department"),
-                        resultSet.getString("person"),
-                        getDateOrNull(resultSet, "planned_date"),
-                        getDateOrNull(resultSet, "completed_date"),
-                        resultSet.getString("signature"),
-                        resultSet.getString("colorClass_pv"),
-                        resultSet.getString("colorClass_rv"),
-                        resultSet.getString("category"),
-                        resultSet.getString("version")
-                    );
+                    ChecklistItem item = createChecklistItem(resultSet);
                     checklistItems.add(item);
                 }
 
@@ -239,19 +227,7 @@ public class ChecklistDAO {
 
                 ResultSet resultSet = preparedStatement.executeQuery();
                 while (resultSet.next()) {
-                    ChecklistItem item = new ChecklistItem(
-                        resultSet.getInt("id"),
-                        resultSet.getString("task"),
-                        resultSet.getString("department"),
-                        resultSet.getString("person"),
-                        getDateOrNull(resultSet, "planned_date"),
-                        getDateOrNull(resultSet, "completed_date"),
-                        resultSet.getString("signature"),
-                        resultSet.getString("colorClass_pv"),
-                        resultSet.getString("colorClass_rv"),
-                        resultSet.getString("category"),
-                        resultSet.getString("version")
-                    );
+                    ChecklistItem item = createChecklistItem(resultSet);
                     checklistItems.add(item);
                 }
 
@@ -273,19 +249,7 @@ public class ChecklistDAO {
 
                 ResultSet resultSet = preparedStatement.executeQuery();
                 while (resultSet.next()) {
-                    ChecklistItem item = new ChecklistItem(
-                        resultSet.getInt("id"),
-                        resultSet.getString("task"),
-                        resultSet.getString("department"),
-                        resultSet.getString("person"),
-                        getDateOrNull(resultSet, "planned_date"),
-                        getDateOrNull(resultSet, "completed_date"),
-                        resultSet.getString("signature"),
-                        resultSet.getString("colorClass_pv"),
-                        resultSet.getString("colorClass_rv"),
-                        resultSet.getString("category"),
-                        resultSet.getString("version")
-                    );
+                    ChecklistItem item = createChecklistItem(resultSet);
                     checklistItems.add(item);
                 }
 
@@ -309,19 +273,7 @@ public class ChecklistDAO {
 
                 ResultSet resultSet = preparedStatement.executeQuery();
                 while (resultSet.next()) {
-                    ChecklistItem item = new ChecklistItem(
-                        resultSet.getInt("id"),
-                        resultSet.getString("task"),
-                        resultSet.getString("department"),
-                        resultSet.getString("person"),
-                        getDateOrNull(resultSet, "planned_date"),
-                        getDateOrNull(resultSet, "completed_date"),
-                        resultSet.getString("signature"),
-                        resultSet.getString("colorClass_pv"),
-                        resultSet.getString("colorClass_rv"),
-                        resultSet.getString("category"),
-                        resultSet.getString("version")
-                    );
+                    ChecklistItem item = createChecklistItem(resultSet);
                     checklistItems.add(item);
                 }
 
@@ -345,19 +297,7 @@ public class ChecklistDAO {
 
                 ResultSet resultSet = preparedStatement.executeQuery();
                 while (resultSet.next()) {
-                    ChecklistItem item = new ChecklistItem(
-                        resultSet.getInt("id"),
-                        resultSet.getString("task"),
-                        resultSet.getString("department"),
-                        resultSet.getString("person"),
-                        getDateOrNull(resultSet, "planned_date"),
-                        getDateOrNull(resultSet, "completed_date"),
-                        resultSet.getString("signature"),
-                        resultSet.getString("colorClass_pv"),
-                        resultSet.getString("colorClass_rv"),
-                        resultSet.getString("category"),
-                        resultSet.getString("version")
-                    );
+                    ChecklistItem item = createChecklistItem(resultSet);
                     checklistItems.add(item);                    
                 }
             } catch (SQLException e) {
@@ -378,19 +318,7 @@ public class ChecklistDAO {
 
                 ResultSet resultSet = preparedStatement.executeQuery();
                 while (resultSet.next()) {
-                    ChecklistItem item = new ChecklistItem(
-                        resultSet.getInt("id"),
-                        resultSet.getString("task"),
-                        resultSet.getString("department"),
-                        resultSet.getString("person"),
-                        getDateOrNull(resultSet, "planned_date"),
-                        getDateOrNull(resultSet, "completed_date"),
-                        resultSet.getString("signature"),
-                        resultSet.getString("colorClass_pv"),
-                        resultSet.getString("colorClass_rv"),
-                        resultSet.getString("category"),
-                        resultSet.getString("version")
-                    );
+                    ChecklistItem item = createChecklistItem(resultSet);
                     checklistItems.add(item);
                 }
 
@@ -414,19 +342,7 @@ public class ChecklistDAO {
     
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                ChecklistItem item = new ChecklistItem(
-                        resultSet.getInt("id"),
-                        resultSet.getString("task"),
-                        resultSet.getString("department"),
-                        resultSet.getString("person"),
-                        getDateOrNull(resultSet, "planned_date"),
-                        getDateOrNull(resultSet, "completed_date"),
-                        resultSet.getString("signature"),
-                        resultSet.getString("colorClass_pv"),
-                        resultSet.getString("colorClass_rv"),
-                        resultSet.getString("category"),
-                        resultSet.getString("version")
-                );
+                ChecklistItem item = createChecklistItem(resultSet);
                 checklistItems.add(item);
             }
     
@@ -448,19 +364,7 @@ public class ChecklistDAO {
     
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                ChecklistItem item = new ChecklistItem(
-                        resultSet.getInt("id"),
-                        resultSet.getString("task"),
-                        resultSet.getString("department"),
-                        resultSet.getString("person"),
-                        getDateOrNull(resultSet, "planned_date"),
-                        getDateOrNull(resultSet, "completed_date"),
-                        resultSet.getString("signature"),
-                        resultSet.getString("colorClass_pv"),
-                        resultSet.getString("colorClass_rv"),
-                        resultSet.getString("category"),
-                        resultSet.getString("version")
-                );
+                ChecklistItem item = createChecklistItem(resultSet);
                 checklistItems.add(item);
             }
     
@@ -587,5 +491,21 @@ public class ChecklistDAO {
 
         Date date = resultSet.getDate(columnName);
         return (date != null) ? date.toLocalDate() : null;
+    }
+
+    private ChecklistItem createChecklistItem(ResultSet resultSet) throws SQLException {
+        return new ChecklistItem(
+            resultSet.getInt("id"),
+            resultSet.getString("task"),
+            resultSet.getString("department"),
+            resultSet.getString("person"),
+            getDateOrNull(resultSet, "planned_date"),
+            getDateOrNull(resultSet, "completed_date"),
+            resultSet.getString("signature"),
+            resultSet.getString("colorClass_pv"),
+            resultSet.getString("colorClass_rv"),
+            resultSet.getString("category"),
+            resultSet.getString("version")
+        );
     }
 }

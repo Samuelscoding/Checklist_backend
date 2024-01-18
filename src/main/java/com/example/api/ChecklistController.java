@@ -75,7 +75,6 @@ public class ChecklistController {
             referenceDate = checklistDAO.getFinalReleaseDate(version);
             int daysDifference = 5;
             return referenceDate.minusDays(daysDifference);
-
         } else {
             return null;
         } 
@@ -277,6 +276,11 @@ public class ChecklistController {
                 checklistItems = checklistDAO.getChecklistItems();  
             }
         }
+
+        for(ChecklistItem item : checklistItems) {
+            item.setPlannedDate(calculatePlannedDate(item, item.getVersion()));
+        }
+
         ctx.json(checklistItems);
     };
 
