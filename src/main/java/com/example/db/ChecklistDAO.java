@@ -89,7 +89,7 @@ public class ChecklistDAO {
             e.printStackTrace();
         }
     }
-
+    
     // Version löschen
     public void deleteVersion(int versionId) {
         try (Connection connection = DatabaseConnector.getConnection();
