@@ -90,6 +90,22 @@ public class ChecklistDAO {
         }
     }
 
+    // Version löschen
+    public void deleteVersion(int versionId) {
+        try (Connection connection = DatabaseConnector.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM versions WHERE id=?")) {
+                    preparedStatement.setInt(1, versionId);
+
+                    int rowsAffected = preparedStatement.executeUpdate();
+
+                    if(rowsAffected == 0) {
+                        throw new SQLException("Failed to delete version");
+                    }
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     // Ersetzt Aufgaben
     public void replaceChecklistItems(String version, List<ChecklistItem> newItems) {
         try(Connection connection = DatabaseConnector.getConnection()) {

@@ -240,6 +240,13 @@ public class ChecklistController {
         ctx.status(200).json(editedVersion);
     };
 
+    // Handler um Version zu löschen
+    public Handler deleteVersion = ctx -> {
+        int versionId = ctx.pathParamAsClass("versionId", Integer.class).get();
+        checklistDAO.deleteVersion(versionId);
+        ctx.status(204);
+    };
+
     public Handler getChecklistItems = ctx -> {
 
         List<ChecklistItem> checklistItems;
