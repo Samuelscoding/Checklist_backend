@@ -242,8 +242,8 @@ public class ChecklistController {
 
     // Handler um Version zu löschen
     public Handler deleteVersion = ctx -> {
-        int versionId = ctx.pathParamAsClass("versionId", Integer.class).get();
-        checklistDAO.deleteVersion(versionId);
+        String versionName = ctx.pathParam("versionName");
+        checklistDAO.deleteVersion(versionName);
         ctx.status(204);
     };
 

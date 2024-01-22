@@ -89,20 +89,49 @@ public class ChecklistDAO {
             e.printStackTrace();
         }
     }
-    
-    // Version löschen
-    public void deleteVersion(int versionId) {
-        try (Connection connection = DatabaseConnector.getConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM versions WHERE id=?")) {
-                    preparedStatement.setInt(1, versionId);
 
-                    int rowsAffected = preparedStatement.executeUpdate();
+    // Version und zugehörige Aufgaben löschen
+    public void deleteVersion(String versionName) {
+        try(Connection connection = DatabaseConnector.getConnection()) {
 
-                    if(rowsAffected == 0) {
-                        throw new SQLException("Failed to delete version");
-                    }
+            // Transaktion starten
+            connection.setAutoCommit(false);
+
+            try {
+                // Aufgaben der Version löschen
+                deleteTasksByVersionName(versionName, connection);
+
+                // Version löschen
+                deleteVersionByName(versionName, connection);
+
+                // Transaktion commiten
+                connection.commit();
+            } catch(SQLException e) {
+                connection.rollback();
+                e.printStackTrace();
+            }
         } catch(SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    // Aufaben der Version löschen
+    private void deleteTasksByVersionName(String versionName, Connection connection) throws SQLException {
+        try(PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM checklist WHERE version = ?")) {
+            preparedStatement.setString(1, versionName);
+            preparedStatement.executeUpdate();
+        }
+    }
+
+    // Version auf Namen löschen
+    private void deleteVersionByName(String versionName, Connection connection) throws SQLException {
+        try(PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM versions WHERE name = ?")) {
+            preparedStatement.setString(1, versionName);
+            int rowsAffected = preparedStatement.executeUpdate();
+
+            if(rowsAffected == 0) {
+                throw new SQLException("Failed to delete version");
+            }
         }
     }
 
