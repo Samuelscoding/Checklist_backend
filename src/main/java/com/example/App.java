@@ -10,13 +10,10 @@ import com.example.auth.LDAPAuthenticator;
 
 import io.javalin.Javalin;
 
-
 public class App 
 {
     public static void main( String[] args ) {
-
         try {
-
             Javalin app = Javalin.create(config -> {
                 config.plugins.enableCors(cors -> {
                     cors.add(it -> {
@@ -46,6 +43,7 @@ public class App
             app.post("/api/checklist/addTask", checklistController.addItemToChecklist);
             app.delete("/api/checklist/delete/{taskId}", checklistController.deleteItemFromChecklist);
             app.put("/api/checklist/edit/{taskId}", checklistController.updateItemInChecklist);
+            app.post("/api/checklist/sendReminderEmail", checklistController.sendReminderEmail);
 
             app.post("/api/checklist/import", checklistController.importChecklistItems);
 
@@ -58,12 +56,9 @@ public class App
                 e.printStackTrace();
                 ctx.status(500).json("Internal Server Error");
             });
-
         } catch (IOException e) {
-
             e.printStackTrace();
         }
-        
 
     }
 }

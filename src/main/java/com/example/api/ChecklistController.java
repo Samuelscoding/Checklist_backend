@@ -4,6 +4,9 @@ import com.example.db.ChecklistDAO;
 import com.example.db.ChecklistItem;
 import com.example.db.Version;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 import io.javalin.http.Handler;
 
 import java.time.LocalDate;
@@ -12,6 +15,29 @@ import java.util.List;
 public class ChecklistController {
 
     private final ChecklistDAO checklistDAO = new ChecklistDAO();
+
+    // Handler für das Senden von Reminder-E-Mails
+    public Handler sendReminderEmail = ctx -> {
+        try {
+            String jsonBody = ctx.body();
+            JsonObject jsonObject = JsonParser.parseString(jsonBody).getAsJsonObject();
+            String to = jsonObject.get("to").getAsString();
+            String subject = jsonObject.get("subject").getAsString();
+            String body = jsonObject.get("body").getAsString();
+
+            // Überprüfen der Werte 
+            System.out.println("To: " + to);
+            System.out.println("Subject: " + subject);
+            System.out.println("Body: " + body);
+
+            EmailController.sendEmail(to, subject, body);
+
+            ctx.status(200).result("Reminder email sent successfully");
+        } catch(Exception e) {
+            e.printStackTrace();
+            ctx.status(500).result("Error sending reminder email");
+        }
+    };
 
     // Überprüfung, welche Art von Aufgabe
     private LocalDate calculatePlannedDate(ChecklistItem checklistItem, String version) {
@@ -311,7 +337,4 @@ public class ChecklistController {
 
         ctx.status(200).json(updatedItem);
     };
-
-
-
 }
