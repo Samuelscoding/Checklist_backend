@@ -18,7 +18,7 @@ public class EmailController {
         properties = new Properties();
         properties.put("mail.smtp.host", "mail.asc.de");
         properties.put("mail.smtp.port", "25");
-        properties.put("mail.smtp.auth", "true");
+        properties.put("mail.smtp.auth", "false");
         properties.put("mail.smtp.starttls.enable", "true");
     }
 
