@@ -475,6 +475,198 @@ public class ChecklistDAO {
             }
     }
 
+    public List<ChecklistItem> getChecklistItemsForUser(String username) {
+        List<ChecklistItem> checklistItems = new ArrayList<>();
+
+        try(Connection connection = DatabaseConnector.getConnection();
+        
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM checklist WHERE person = ?")) {
+
+                preparedStatement.setString(1, username);
+
+                ResultSet resultSet = preparedStatement.executeQuery();
+                while (resultSet.next()) {
+                    ChecklistItem item = createChecklistItem(resultSet);
+                    checklistItems.add(item);
+                }
+
+            } catch (SQLException e) {
+
+                e.printStackTrace();
+            }
+
+        return checklistItems;
+
+    }
+
+    // Wird ausgeführt, wenn ein Abteilungsfilter übergeben wird
+    public List<ChecklistItem> getChecklistItemsByDepartmentForUser(String department, String username) {
+        List<ChecklistItem> checklistItems = new ArrayList<>();
+
+        try(Connection connection = DatabaseConnector.getConnection();
+        
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM checklist WHERE department = ? AND person = ?")) {
+
+                preparedStatement.setString(1, department);
+
+                ResultSet resultSet = preparedStatement.executeQuery();
+                while (resultSet.next()) {
+                    ChecklistItem item = createChecklistItem(resultSet);
+                    checklistItems.add(item);
+                }
+
+            } catch (SQLException e) {
+
+                e.printStackTrace();
+            }
+
+        return checklistItems;
+
+    }
+
+    public List<ChecklistItem> getIncompleteChecklistItemsForUser(String username) {
+        List<ChecklistItem> checklistItems = new ArrayList<>();
+
+        try(Connection connection = DatabaseConnector.getConnection();
+        
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM checklist WHERE (completed_date IS NULL OR signature IS NULL) AND person = ?")) {
+
+                preparedStatement.setString(1, username);
+                preparedStatement.setString(2, username);
+
+                ResultSet resultSet = preparedStatement.executeQuery();
+                while (resultSet.next()) {
+                    ChecklistItem item = createChecklistItem(resultSet);
+                    checklistItems.add(item);
+                }
+
+            } catch (SQLException e) {
+
+                e.printStackTrace();
+            }
+
+        return checklistItems;
+
+    }    
+
+    public List<ChecklistItem> getIncompleteChecklistItemsByDepartmentForUser(String department, String username) {
+        List<ChecklistItem> checklistItems = new ArrayList<>();
+
+        try(Connection connection = DatabaseConnector.getConnection();
+        
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM checklist WHERE (completed_date IS NULL OR signature IS NULL) AND department = ? AND person = ?")) {
+
+                preparedStatement.setString(1, department);
+                preparedStatement.setString(2, username);
+
+                ResultSet resultSet = preparedStatement.executeQuery();
+                while (resultSet.next()) {
+                    ChecklistItem item = createChecklistItem(resultSet);
+                    checklistItems.add(item);
+                }
+
+            } catch (SQLException e) {
+
+                e.printStackTrace();
+            }
+
+        return checklistItems;
+
+    }    
+
+    public List <ChecklistItem> getChecklistItemsByVersionForUser(String version, String username) {
+        List <ChecklistItem> checklistItems = new ArrayList<>();
+
+        try (Connection connection = DatabaseConnector.getConnection();
+            
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM checklist WHERE version = ? AND person = ?")) {
+               
+                preparedStatement.setString(1, version);
+                preparedStatement.setString(2, username);
+
+                ResultSet resultSet = preparedStatement.executeQuery();
+                while (resultSet.next()) {
+                    ChecklistItem item = createChecklistItem(resultSet);
+                    checklistItems.add(item);                    
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+        return checklistItems;
+    }
+
+        public List<ChecklistItem> getIncompleteChecklistItemsByVersionForUser(String version, String username) {
+        List<ChecklistItem> checklistItems = new ArrayList<>();
+
+        try(Connection connection = DatabaseConnector.getConnection();
+        
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM checklist WHERE version = ? AND (completed_date IS NULL OR signature IS NULL) AND person = ?")) {
+
+                preparedStatement.setString(1, version);
+                preparedStatement.setString(2, username);
+
+                ResultSet resultSet = preparedStatement.executeQuery();
+                while (resultSet.next()) {
+                    ChecklistItem item = createChecklistItem(resultSet);
+                    checklistItems.add(item);
+                }
+
+            } catch (SQLException e) {
+
+                e.printStackTrace();
+            }
+
+        return checklistItems;
+
+    }   
+
+    public List<ChecklistItem> getChecklistItemsByDepartmentAndVersionForUser(String department, String version, String username) {
+        List<ChecklistItem> checklistItems = new ArrayList<>();
+    
+        try (Connection connection = DatabaseConnector.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM checklist WHERE department = ? AND version = ? AND person = ?")) {
+    
+            preparedStatement.setString(1, department);
+            preparedStatement.setString(2, version);
+            preparedStatement.setString(3, username);
+    
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                ChecklistItem item = createChecklistItem(resultSet);
+                checklistItems.add(item);
+            }
+    
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    
+        return checklistItems;
+    }
+    
+    public List<ChecklistItem> getIncompleteChecklistItemsByDepartmentAndVersionForUser(String department, String version, String username) {
+        List<ChecklistItem> checklistItems = new ArrayList<>();
+    
+        try (Connection connection = DatabaseConnector.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM checklist WHERE (completed_date IS NULL OR signature IS NULL) AND department = ? AND version = ? AND person = ?")) {
+    
+            preparedStatement.setString(1, department);
+            preparedStatement.setString(2, version);
+            preparedStatement.setString(3, username);
+    
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                ChecklistItem item = createChecklistItem(resultSet);
+                checklistItems.add(item);
+            }
+    
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    
+        return checklistItems;
+    }
+
     public void deleteItemFromChecklist(int taskId) {
 
         try (Connection connection = DatabaseConnector.getConnection();

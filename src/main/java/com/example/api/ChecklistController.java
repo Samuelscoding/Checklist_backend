@@ -273,7 +273,8 @@ public class ChecklistController {
         ctx.status(204);
     };
 
-    public Handler getChecklistItems = ctx -> {
+    // Handler um alle Aufgaben für den Admin zu erhalten
+    public Handler getChecklistItemsForAdmin = ctx -> {
 
         List<ChecklistItem> checklistItems;
 
@@ -314,6 +315,50 @@ public class ChecklistController {
             item.setPlannedDate(calculatePlannedDate(item, item.getVersion()));
         }
 
+        ctx.json(checklistItems);
+    };
+
+    // Handler um Aufgaben des Nutzers zu laden
+    public Handler getChecklistItemsforUser = ctx -> {
+        List<ChecklistItem> checklistItems;
+
+        String departmentFilter = ctx.queryParam("department");
+        String versionFilter = ctx.queryParam("version");
+        boolean showIncompleteTasks = ctx.queryParam("showIncompleteTasks") != null;
+        String username = ctx.queryParam("username");
+
+        if (versionFilter != null && !versionFilter.isEmpty()) {
+            if (showIncompleteTasks) {
+                if (departmentFilter != null && !departmentFilter.isEmpty()) {
+                    checklistItems = checklistDAO.getIncompleteChecklistItemsByDepartmentAndVersionForUser(departmentFilter, versionFilter, username);
+                } else {
+                    checklistItems = checklistDAO.getIncompleteChecklistItemsByVersionForUser(versionFilter, username);
+                }
+            } else {
+                if (departmentFilter != null && !departmentFilter.isEmpty()) {
+                    checklistItems = checklistDAO.getChecklistItemsByDepartmentAndVersionForUser(departmentFilter, versionFilter, username);
+                } else {
+                    checklistItems = checklistDAO.getChecklistItemsByVersionForUser(versionFilter, username);
+                }
+            }
+        } else if (departmentFilter != null && !departmentFilter.isEmpty()) {
+            if (showIncompleteTasks) {
+                checklistItems = checklistDAO.getIncompleteChecklistItemsByDepartmentForUser(departmentFilter, username);
+            } else {
+                checklistItems = checklistDAO.getChecklistItemsByDepartmentForUser(departmentFilter, username);
+            }
+        } else {
+            if (showIncompleteTasks) {
+                checklistItems = checklistDAO.getIncompleteChecklistItemsForUser(username);
+            } else {
+                checklistItems = checklistDAO.getChecklistItemsForUser(username);
+            }
+        }
+
+        for(ChecklistItem item : checklistItems) {
+            item.setPlannedDate(calculateCustomDate(item, item.getVersion()));
+        }
+        
         ctx.json(checklistItems);
     };
 

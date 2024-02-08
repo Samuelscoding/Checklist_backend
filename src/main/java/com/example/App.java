@@ -19,7 +19,9 @@ public class App
         }).start(5500);
         
         ChecklistController checklistController = new ChecklistController();
-        app.get("/api/checklist", checklistController.getChecklistItems);
+        app.get("/api/checklist/admin", checklistController.getChecklistItemsForAdmin);
+        app.get("/api/checklist/user", checklistController.getChecklistItemsforUser);
+
         app.post("/api/checklist/addTask", checklistController.addItemToChecklist);
         app.delete("/api/checklist/delete/{taskId}", checklistController.deleteItemFromChecklist);
         app.put("/api/checklist/edit/{taskId}", checklistController.updateItemInChecklist);
