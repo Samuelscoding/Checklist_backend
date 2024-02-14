@@ -168,8 +168,12 @@ public class ChecklistDAO {
     // Version freigeben
     public void completeVersion(Version completedVersion) {
         try(Connection connection = DatabaseConnector.getConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement("UPDATE versions SET finishedDate=?, signature=?, released=? WHERE id=?")) {
-                    preparedStatement.setDate(1, completedVersion.getFinishedDate() != null ? Date.valueOf(completedVersion.getFinishedDate()) : null);
+                PreparedStatement preparedStatement = connection.prepareStatement("UPDATE versions SET finishedDate=?, signature=?, released=? WHERE id=?")) {    
+                    
+                    // Überprüfen, ob das Datum vorhanden ist und einen Tag hinzufügen, wenn ja
+                    Date finishedDate = completedVersion.getFinishedDate() != null ? addOneDay(completedVersion.getFinishedDate()) : null;
+
+                    preparedStatement.setDate(1, finishedDate);
                     preparedStatement.setString(2, completedVersion.getSignature());
                     preparedStatement.setBoolean(3, completedVersion.isReleased());
                     preparedStatement.setInt(4, completedVersion.getId());
@@ -182,6 +186,11 @@ public class ChecklistDAO {
                 } catch(SQLException e) {
                     e.printStackTrace();
                 }
+    }
+
+    // Tag hinzufügen
+    private Date addOneDay(LocalDate date) {
+        return Date.valueOf(date.plusDays(1));
     }
 
     // Ersetzt Aufgaben
