@@ -273,6 +273,33 @@ public class ChecklistController {
         ctx.status(204);
     };
 
+    // Handler um Version freizugeben
+    public Handler completeVersion = ctx -> {
+        int versionId = Integer.parseInt(ctx.pathParam("id"));
+        Version updatedVersion = ctx.bodyAsClass(Version.class);
+    
+        // Überprüfen, ob die Version gültig ist (z.B. ob sie in der Datenbank existiert)
+        Version existingVersion = checklistDAO.getVersionById(versionId);
+        if (existingVersion == null) {
+            ctx.status(404).result("Version not found");
+            return;
+        }
+    
+        // Aktualisieren der spezifischen Felder
+        if (updatedVersion.getFinishedDate() != null) {
+            existingVersion.setFinishedDate(updatedVersion.getFinishedDate());
+        }
+        if (updatedVersion.getSignature() != null) {
+            existingVersion.setSignature(updatedVersion.getSignature());
+        }
+        existingVersion.setReleased(updatedVersion.isReleased());
+    
+        // Aktualisieren der Version in der Datenbank
+        checklistDAO.completeVersion(existingVersion);
+    
+        ctx.json(existingVersion); // Rückgabe der aktualisierten Version
+    };
+
     // Handler um alle Aufgaben für den Admin zu erhalten
     public Handler getChecklistItemsForAdmin = ctx -> {
 

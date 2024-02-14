@@ -2,7 +2,6 @@ package com.example;
 
 import com.example.api.ChecklistController;
 
-
 import io.javalin.Javalin;
 
 public class App 
@@ -33,6 +32,7 @@ public class App
         app.post("api/version/addVersion", checklistController.addVersion);
         app.put("/api/version/editVersion/{id}", checklistController.editVersion);
         app.delete("/api/version/deleteVersion/{versionName}", checklistController.deleteVersion);
+        app.post("/api/version/completeVersion/{id}", checklistController.completeVersion);
 
         app.exception(Exception.class, (e, ctx) -> {
             e.printStackTrace();

@@ -26,15 +26,45 @@ public class ChecklistDAO {
                         resultSet.getInt("id"),
                         resultSet.getString("name"),
                         resultSet.getDate("preliminaryrelease").toLocalDate(),
-                        resultSet.getDate("finalrelease").toLocalDate()
+                        resultSet.getDate("finalrelease").toLocalDate(),
+                        resultSet.getDate("finishedDate") != null ? resultSet.getDate("finishedDate").toLocalDate() : null,
+                        resultSet.getString("signature"),
+                        resultSet.getBoolean("released")
                     );
                     versions.add(version);
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-
             return versions;
+    }
+
+    // Version nach ID abrufen
+    public Version getVersionById(int versionId) {
+        Version version = null;
+    
+        try (Connection connection = DatabaseConnector.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM versions WHERE id = ?")) {
+            preparedStatement.setInt(1, versionId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+    
+            if (resultSet.next()) {
+                // Version aus ResultSet extrahieren und erstellen
+                version = new Version(
+                    resultSet.getInt("id"),
+                    resultSet.getString("name"),
+                    resultSet.getDate("preliminaryrelease").toLocalDate(),
+                    resultSet.getDate("finalrelease").toLocalDate(),
+                    resultSet.getDate("finishedDate") != null ? resultSet.getDate("finishedDate").toLocalDate() : null,
+                    resultSet.getString("signature"),
+                    resultSet.getBoolean("released")
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    
+        return version;
     }
 
     // Version hinzufügen
@@ -133,6 +163,25 @@ public class ChecklistDAO {
                 throw new SQLException("Failed to delete version");
             }
         }
+    }
+
+    // Version freigeben
+    public void completeVersion(Version completedVersion) {
+        try(Connection connection = DatabaseConnector.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement("UPDATE versions SET finishedDate=?, signature=?, released=? WHERE id=?")) {
+                    preparedStatement.setDate(1, completedVersion.getFinishedDate() != null ? Date.valueOf(completedVersion.getFinishedDate()) : null);
+                    preparedStatement.setString(2, completedVersion.getSignature());
+                    preparedStatement.setBoolean(3, completedVersion.isReleased());
+                    preparedStatement.setInt(4, completedVersion.getId());
+
+                    int rowsAffected = preparedStatement.executeUpdate();
+
+                    if(rowsAffected == 0) {
+                        throw new SQLException("Failed to complete version");
+                    }
+                } catch(SQLException e) {
+                    e.printStackTrace();
+                }
     }
 
     // Ersetzt Aufgaben
