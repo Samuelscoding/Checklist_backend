@@ -39,6 +39,35 @@ public class ChecklistDAO {
             return versions;
     }
 
+    // Nicht-erledigte Versionen abrufen
+    public List<Version> getUnreleasedVersions() {
+        List<Version> unreleasedVersions = new ArrayList<>();
+
+        try(Connection connection = DatabaseConnector.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM versions WHERE released = false OR released IS NULL")) {
+                ResultSet resultSet = preparedStatement.executeQuery();
+
+                while(resultSet.next()) {
+                    Version version = new Version(
+                        resultSet.getInt("id"),
+                        resultSet.getString("name"),
+                        resultSet.getDate("preliminaryrelease").toLocalDate(),
+                        resultSet.getDate("finalrelease").toLocalDate(),
+                        resultSet.getDate("finishedDate") != null ? resultSet.getDate("finishedDate").toLocalDate() : null,
+                        resultSet.getString("signature"),
+                        resultSet.getBoolean("released")
+                    );
+
+                    unreleasedVersions.add(version);
+                }
+
+                return unreleasedVersions;
+            } catch(SQLException e) {
+                e.printStackTrace();
+                return null;
+            }
+    }
+
     // Version nach ID abrufen
     public Version getVersionById(int versionId) {
         Version version = null;

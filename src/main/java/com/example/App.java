@@ -28,7 +28,8 @@ public class App
 
         app.post("/api/checklist/import", checklistController.importChecklistItems);
 
-        app.get("/api/versions", checklistController.getVersions);
+        app.get("/api/versions/admin", checklistController.getVersions);
+        app.get("/api/versions/user", checklistController.getUnreleasedVersions);
         app.post("api/version/addVersion", checklistController.addVersion);
         app.put("/api/version/editVersion/{id}", checklistController.editVersion);
         app.delete("/api/version/deleteVersion/{versionName}", checklistController.deleteVersion);

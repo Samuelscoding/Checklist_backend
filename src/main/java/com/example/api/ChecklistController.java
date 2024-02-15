@@ -252,6 +252,12 @@ public class ChecklistController {
         ctx.json(versions);
     };
 
+    // Handler um nicht-freigegebene Versionen abzurufen
+    public Handler getUnreleasedVersions = ctx -> {
+        List<Version> unreleasedVersions = checklistDAO.getUnreleasedVersions();
+        ctx.json(unreleasedVersions);
+    };
+
     // Handler um neue Version hinzuzufügen
     public Handler addVersion = ctx -> {
         Version newVersion = ctx.bodyAsClass(Version.class);
