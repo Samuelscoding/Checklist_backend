@@ -199,9 +199,13 @@ public class ChecklistDAO {
         try(Connection connection = DatabaseConnector.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement("UPDATE versions SET finishedDate=?, signature=?, released=? WHERE id=?")) {    
 
-                    java.sql.Date finishedDate = java.sql.Date.valueOf(completedVersion.getFinishedDate());
+                    // Überprüfen, ob das Datum leer ist
+                    java.sql.Date finishedDate = null;
+                    if (completedVersion.getFinishedDate() != null) {
+                        finishedDate = java.sql.Date.valueOf(completedVersion.getFinishedDate());
+                    }
 
-                    preparedStatement.setDate(1, finishedDate);
+                    preparedStatement.setObject(1, finishedDate);
                     preparedStatement.setString(2, completedVersion.getSignature());
                     preparedStatement.setBoolean(3, completedVersion.isReleased());
                     preparedStatement.setInt(4, completedVersion.getId());
