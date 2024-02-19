@@ -108,7 +108,7 @@ public class ChecklistController {
 
     // Handler um Datum von normalen Aufgaben zu berechnen
     private LocalDate calculateCustomDate(ChecklistItem checklistItem, String version) {
-        LocalDate referenceDate;
+        LocalDate referenceDate = LocalDate.now();
 
         if("Die ASC-Product-Roadmap ist aktualisiert".equals(checklistItem.getTask()) || 
            "Die Detaillierung der Features für den Sprint wurden im Issue & Project Tracking Tool durchgeführt".equals(checklistItem.getTask()) ||
@@ -209,7 +209,11 @@ public class ChecklistController {
             return referenceDate.minusDays(daysDifference);
 
         } else {
-            return null;
+            if(checklistItem.getPlannedDate() != null) {
+                return checklistItem.getPlannedDate();
+            } else {
+                return referenceDate;
+            }
         }
     }
 
