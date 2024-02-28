@@ -25,6 +25,24 @@ public class ChecklistController {
 
     private final ChecklistDAO checklistDAO = new ChecklistDAO();
 
+    private boolean isValidAdminToken(String token) {
+        try {
+            Claims claims = getAllClaimsFromToken(token);
+            Boolean isAdmin = (Boolean) claims.get("isAdmin");
+            return isAdmin != null && isAdmin;
+        } catch(Exception e) {
+                return false;
+        }
+    }
+
+    private Claims getAllClaimsFromToken(String token) {
+        return Jwts.parser()
+            .verifyWith(SECRET_KEY)
+            .build()
+            .parseSignedClaims(token)
+            .getPayload();
+    }
+
     // Handler für das Senden von Reminder-E-Mails
     public Handler sendReminderEmail = ctx -> {
         try {
@@ -295,24 +313,6 @@ public class ChecklistController {
             ctx.status(401).result("Kein gültiges Authentifizierungstoken vorhanden!");
         }
     };
-    
-    private boolean isValidAdminToken(String token) {
-        try {
-            Claims claims = getAllClaimsFromToken(token);
-            Boolean isAdmin = (Boolean) claims.get("isAdmin");
-            return isAdmin != null && isAdmin;
-        } catch(Exception e) {
-                return false;
-        }
-    }
-
-    private Claims getAllClaimsFromToken(String token) {
-        return Jwts.parser()
-            .verifyWith(SECRET_KEY)
-            .build()
-            .parseSignedClaims(token)
-            .getPayload();
-    }
 
     // Handler um Version zu löschen
     public Handler deleteVersion = ctx -> {
