@@ -1,7 +1,6 @@
 package com.example;
 
 import com.example.api.ChecklistController;
-
 import io.javalin.Javalin;
 
 public class App 

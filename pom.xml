@@ -88,6 +88,13 @@
       <version>5.2.2</version>
     </dependency>
 
+    <dependency>
+      <groupId>io.jsonwebtoken</groupId>
+      <artifactId>jjwt</artifactId>
+      <version>0.12.5</version>
+    </dependency>
+
+
   </dependencies>
 
   <build>

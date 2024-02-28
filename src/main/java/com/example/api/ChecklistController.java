@@ -7,12 +7,21 @@ import com.example.db.Version;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import io.github.cdimascio.dotenv.Dotenv;
 import io.javalin.http.Handler;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
 
 import java.time.LocalDate;
 import java.util.List;
 
+import javax.crypto.SecretKey;
+
 public class ChecklistController {
+    private static final Dotenv dotenv = Dotenv.load();
+    private static final String SECRET_KEY_STRING = dotenv.get("SECRET_KEY"); 
+    private static final SecretKey SECRET_KEY = Keys.hmacShaKeyFor(SECRET_KEY_STRING.getBytes());
 
     private final ChecklistDAO checklistDAO = new ChecklistDAO();
 
@@ -271,10 +280,39 @@ public class ChecklistController {
 
     // Handler um Version zu bearbeiten
     public Handler editVersion = ctx -> {
-        Version editedVersion = ctx.bodyAsClass(Version.class);
-        checklistDAO.editVersion(editedVersion);
-        ctx.status(200).json(editedVersion);
+
+        String authorizationHeader = ctx.header("Authorization");
+        if(authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            String token = authorizationHeader.substring(7);
+            if(isValidAdminToken(token)) {
+                Version editedVersion = ctx.bodyAsClass(Version.class);
+                checklistDAO.editVersion(editedVersion);
+                ctx.status(200).json(editedVersion);
+            } else {
+                ctx.status(403).result("Sie haben keine Berechtigung dazu!");
+            }
+        } else {
+            ctx.status(401).result("Kein gültiges Authentifizierungstoken vorhanden!");
+        }
     };
+    
+    private boolean isValidAdminToken(String token) {
+        try {
+            Claims claims = getAllClaimsFromToken(token);
+            Boolean isAdmin = (Boolean) claims.get("isAdmin");
+            return isAdmin != null && isAdmin;
+        } catch(Exception e) {
+                return false;
+        }
+    }
+
+    private Claims getAllClaimsFromToken(String token) {
+        return Jwts.parser()
+            .verifyWith(SECRET_KEY)
+            .build()
+            .parseSignedClaims(token)
+            .getPayload();
+    }
 
     // Handler um Version zu löschen
     public Handler deleteVersion = ctx -> {
