@@ -45,24 +45,34 @@ public class ChecklistController {
 
     // Handler für das Senden von Reminder-E-Mails
     public Handler sendReminderEmail = ctx -> {
-        try {
-            String jsonBody = ctx.body();
-            JsonObject jsonObject = JsonParser.parseString(jsonBody).getAsJsonObject();
-            String to = jsonObject.get("to").getAsString();
-            String subject = jsonObject.get("subject").getAsString();
-            String body = jsonObject.get("body").getAsString();
-
-            // Überprüfen der Werte 
-            System.out.println("To: " + to);
-            System.out.println("Subject: " + subject);
-            System.out.println("Body: " + body);
-
-            EmailController.sendEmail(to, subject, body);
-
-            ctx.status(200).result("Reminder email sent successfully");
-        } catch(Exception e) {
-            e.printStackTrace();
-            ctx.status(500).result("Error sending reminder email");
+        String authorizationHeader = ctx.header("Authorization");
+        if(authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            String token = authorizationHeader.substring(7);
+            if(isValidAdminToken(token)) {
+                try {
+                    String jsonBody = ctx.body();
+                    JsonObject jsonObject = JsonParser.parseString(jsonBody).getAsJsonObject();
+                    String to = jsonObject.get("to").getAsString();
+                    String subject = jsonObject.get("subject").getAsString();
+                    String body = jsonObject.get("body").getAsString();
+        
+                    // Überprüfen der Werte 
+                    System.out.println("To: " + to);
+                    System.out.println("Subject: " + subject);
+                    System.out.println("Body: " + body);
+        
+                    EmailController.sendEmail(to, subject, body);
+        
+                    ctx.status(200).result("Reminder email sent successfully");
+                } catch(Exception e) {
+                    e.printStackTrace();
+                    ctx.status(500).result("Error sending reminder email");
+                }
+            } else {
+                ctx.status(200).result("Sie haben keine Berechtigung dazu!");
+            } 
+        } else {
+            ctx.status(401).result("Kein gültiges Authentifizierungstoken vorhanden!");
         }
     };
 
@@ -246,22 +256,31 @@ public class ChecklistController {
 
     // Handler um Aufgaben zu importieren
     public Handler importChecklistItems = ctx -> {
-        try {
-            ImportChecklistRequest importRequest = ctx.bodyAsClass(ImportChecklistRequest.class);
-            String version = importRequest.getVersion();
-            List<ChecklistItem> importedItems = importRequest.getChecklistItems();
-
-            for(ChecklistItem item : importedItems) {
-                item.setPlannedDate(calculatePlannedDate(item, version));
-            }
-
-            checklistDAO.replaceChecklistItems(version, importedItems);
-            ctx.status(200).json(importedItems);
-        } catch(Exception e) {
-            e.printStackTrace();
-            ctx.status(500).json("Error importing checklist items");
+        String authorizationHeader = ctx.header("Authorization");
+        if(authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            String token = authorizationHeader.substring(7);
+            if(isValidAdminToken(token)) {
+                try {
+                    ImportChecklistRequest importRequest = ctx.bodyAsClass(ImportChecklistRequest.class);
+                    String version = importRequest.getVersion();
+                    List<ChecklistItem> importedItems = importRequest.getChecklistItems();
+        
+                    for(ChecklistItem item : importedItems) {
+                        item.setPlannedDate(calculatePlannedDate(item, version));
+                    }
+        
+                    checklistDAO.replaceChecklistItems(version, importedItems);
+                    ctx.status(200).json(importedItems);
+                } catch(Exception e) {
+                    e.printStackTrace();
+                    ctx.status(500).json("Error importing checklist items");
+                }
+            } else {
+                ctx.status(200).result("Sie haben keine Berechtigung dazu!");
+            } 
+        } else {
+            ctx.status(401).result("Kein gültiges Authentifizierungstoken vorhanden!");
         }
-
     };
 
     public static class ImportChecklistRequest {
@@ -291,14 +310,23 @@ public class ChecklistController {
 
     // Handler um neue Version hinzuzufügen
     public Handler addVersion = ctx -> {
-        Version newVersion = ctx.bodyAsClass(Version.class);
-        checklistDAO.addVersion(newVersion);
-        ctx.status(201).json(newVersion);
+        String authorizationHeader = ctx.header("Authorization");
+        if(authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            String token = authorizationHeader.substring(7);
+            if(isValidAdminToken(token)) {
+                Version newVersion = ctx.bodyAsClass(Version.class);
+                checklistDAO.addVersion(newVersion);
+                ctx.status(201).json(newVersion);
+            } else {
+                ctx.status(200).result("Sie haben keine Berechtigung dazu!");
+            } 
+        } else {
+            ctx.status(401).result("Kein gültiges Authentifizierungstoken vorhanden!");
+        }
     };
 
     // Handler um Version zu bearbeiten
     public Handler editVersion = ctx -> {
-
         String authorizationHeader = ctx.header("Authorization");
         if(authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             String token = authorizationHeader.substring(7);
@@ -316,36 +344,57 @@ public class ChecklistController {
 
     // Handler um Version zu löschen
     public Handler deleteVersion = ctx -> {
-        String versionName = ctx.pathParam("versionName");
-        checklistDAO.deleteVersion(versionName);
-        ctx.status(204);
+        String authorizationHeader = ctx.header("Authorization");
+        if(authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            String token = authorizationHeader.substring(7);
+            if(isValidAdminToken(token)) {
+                String versionName = ctx.pathParam("versionName");
+                checklistDAO.deleteVersion(versionName);
+                ctx.status(204);    
+            } else {
+                ctx.status(403).result("Sie haben keine Berechtigung dazu!");
+            }
+        } else {
+            ctx.status(401).result("Kein gültiges Authentifzierungstoken vorhanden!");
+        }
+
     };
 
     // Handler um Version freizugeben
     public Handler completeVersion = ctx -> {
-        int versionId = Integer.parseInt(ctx.pathParam("id"));
-        Version updatedVersion = ctx.bodyAsClass(Version.class);
-    
-        // Überprüfen, ob die Version gültig ist (z.B. ob sie in der Datenbank existiert)
-        Version existingVersion = checklistDAO.getVersionById(versionId);
-        if (existingVersion == null) {
-            ctx.status(404).result("Version not found");
-            return;
+        String authorizationHeader = ctx.header("Authorization");
+        if(authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            String token = authorizationHeader.substring(7);
+            if(isValidAdminToken(token)) {
+                int versionId = Integer.parseInt(ctx.pathParam("id"));
+                Version updatedVersion = ctx.bodyAsClass(Version.class);
+            
+                // Überprüfen, ob die Version gültig ist (z.B. ob sie in der Datenbank existiert)
+                Version existingVersion = checklistDAO.getVersionById(versionId);
+                if (existingVersion == null) {
+                    ctx.status(404).result("Version not found");
+                    return;
+                }
+            
+                // Aktualisieren der spezifischen Felder
+                if (updatedVersion.getFinishedDate() != null) {
+                    existingVersion.setFinishedDate(updatedVersion.getFinishedDate());
+                }
+                if (updatedVersion.getSignature() != null) {
+                    existingVersion.setSignature(updatedVersion.getSignature());
+                }
+                existingVersion.setReleased(updatedVersion.isReleased());
+            
+                // Aktualisieren der Version in der Datenbank
+                checklistDAO.completeVersion(existingVersion);
+            
+                ctx.json(existingVersion); // Rückgabe der aktualisierten Version
+            } else {
+                ctx.status(403).result("Sie haben keine Berechtigung dazu!");
+            }
+        } else {
+            ctx.status(401).result("Kein gültiges Authentifzierungstoken vorhanden!");
         }
-    
-        // Aktualisieren der spezifischen Felder
-        if (updatedVersion.getFinishedDate() != null) {
-            existingVersion.setFinishedDate(updatedVersion.getFinishedDate());
-        }
-        if (updatedVersion.getSignature() != null) {
-            existingVersion.setSignature(updatedVersion.getSignature());
-        }
-        existingVersion.setReleased(updatedVersion.isReleased());
-    
-        // Aktualisieren der Version in der Datenbank
-        checklistDAO.completeVersion(existingVersion);
-    
-        ctx.json(existingVersion); // Rückgabe der aktualisierten Version
     };
 
     // Handler um alle Aufgaben für den Admin zu erhalten
@@ -438,23 +487,52 @@ public class ChecklistController {
     };
 
     public Handler addItemToChecklist = ctx -> {
-        ChecklistItem newItem = ctx.bodyAsClass(ChecklistItem.class);
-        checklistDAO.addItemToChecklist(newItem);
-        ctx.status(201).json(newItem);
+        String authorizationHeader = ctx.header("Authorization");
+        if(authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            String token = authorizationHeader.substring(7);
+            if(isValidAdminToken(token)) {
+                ChecklistItem newItem = ctx.bodyAsClass(ChecklistItem.class);                   //
+                checklistDAO.addItemToChecklist(newItem);
+                ctx.status(201).json(newItem);
+            } else {
+                ctx.status(403).result("Sie haben keine Berechtigung dazu!");
+            }
+        } else {
+            ctx.status(401).result("Kein gültiges Authentifzierungstoken vorhanden!");
+        }
     };
 
     public Handler deleteItemFromChecklist = ctx -> {
-        int taskId = ctx.pathParamAsClass("taskId", Integer.class).get();
-        checklistDAO.deleteItemFromChecklist(taskId);
-        ctx.status(204);
+        String authorizationHeader = ctx.header("Authorization");
+        if(authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            String token = authorizationHeader.substring(7);
+            if(isValidAdminToken(token)) {
+                int taskId = ctx.pathParamAsClass("taskId", Integer.class).get();
+                checklistDAO.deleteItemFromChecklist(taskId);
+                ctx.status(204);
+            } else {
+                ctx.status(403).result("Sie haben keine Berechtigung dazu!");
+            }
+        } else {
+            ctx.status(401).result("Kein gültiges Authentifzierungstoken vorhanden!");
+        }
     };
 
     public Handler updateItemInChecklist = ctx -> {
-        ChecklistItem updatedItem = ctx.bodyAsClass(ChecklistItem.class);
-        LocalDate plannedDate = calculatePlannedDate(updatedItem, updatedItem.getVersion());
-        updatedItem.setPlannedDate(plannedDate);
-        checklistDAO.updateItemInChecklist(updatedItem);
-
-        ctx.status(200).json(updatedItem);
+        String authorizationHeader = ctx.header("Authorization");
+        if(authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            String token = authorizationHeader.substring(7);
+            if(isValidAdminToken(token)) {
+                ChecklistItem updatedItem = ctx.bodyAsClass(ChecklistItem.class);
+                LocalDate plannedDate = calculatePlannedDate(updatedItem, updatedItem.getVersion());
+                updatedItem.setPlannedDate(plannedDate);
+                checklistDAO.updateItemInChecklist(updatedItem);
+                ctx.status(200).json(updatedItem);
+            } else {
+                ctx.status(403).result("Sie haben keine Berechtigung dazu!");
+            }
+        } else {
+            ctx.status(401).result("Kein gültiges Authentifzierungstoken vorhanden!");
+        }
     };
 }
