@@ -519,20 +519,10 @@ public class ChecklistController {
     };
 
     public Handler updateItemInChecklist = ctx -> {
-        String authorizationHeader = ctx.header("Authorization");
-        if(authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
-            String token = authorizationHeader.substring(7);
-            if(isValidAdminToken(token)) {
-                ChecklistItem updatedItem = ctx.bodyAsClass(ChecklistItem.class);
-                LocalDate plannedDate = calculatePlannedDate(updatedItem, updatedItem.getVersion());
-                updatedItem.setPlannedDate(plannedDate);
-                checklistDAO.updateItemInChecklist(updatedItem);
-                ctx.status(200).json(updatedItem);
-            } else {
-                ctx.status(403).result("Sie haben keine Berechtigung dazu!");
-            }
-        } else {
-            ctx.status(401).result("Kein gültiges Authentifzierungstoken vorhanden!");
-        }
+        ChecklistItem updatedItem = ctx.bodyAsClass(ChecklistItem.class);
+        LocalDate plannedDate = calculatePlannedDate(updatedItem, updatedItem.getVersion());
+        updatedItem.setPlannedDate(plannedDate);
+        checklistDAO.updateItemInChecklist(updatedItem);
+        ctx.status(200).json(updatedItem);
     };
 }
