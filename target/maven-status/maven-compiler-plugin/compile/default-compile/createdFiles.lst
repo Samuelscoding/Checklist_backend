@@ -1,12 +1,9 @@
-com\example\api\AuthController.class
+com\example\api\EmailController.class
 com\example\api\ChecklistController.class
-com\example\auth\Authenticator.class
-com\example\db\Version.class
-com\example\auth\LDAPConfig.class
-com\example\db\ChecklistItem.class
-com\example\auth\User.class
 com\example\db\DatabaseConnector.class
-com\example\auth\LDAPAuthenticator.class
 com\example\App.class
 com\example\api\ChecklistController$ImportChecklistRequest.class
+com\example\api\EmailController$1.class
+com\example\db\Version.class
+com\example\db\ChecklistItem.class
 com\example\db\ChecklistDAO.class

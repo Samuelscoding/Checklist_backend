@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  app-build:
+    build: .
+    image: javalin-app:latest
+    ports:
+      - "5500:5500"
+    environment:
+      DB_URL: jdbc:postgresql://db:5432/Checklist_db
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+    depends_on:
+      - db   
+    networks:
+      checklist_net:
+        ipv4_address: 10.5.0.5
+
+  db:
+    image: postgres
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_DB: Checklist_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      checklist_net:
+        ipv4_address: 10.5.0.6
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:5432
+    networks:
+      checklist_net:
+        ipv4_address: 10.5.0.7
+
+networks:
+  checklist_net:
+    driver: bridge
+    ipam:
+     config:
+       - subnet: 10.5.0.0/16
+         gateway: 10.5.0.1
+
+volumes:
+  pgdata:

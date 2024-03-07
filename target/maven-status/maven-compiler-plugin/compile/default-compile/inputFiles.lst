@@ -1,11 +1,7 @@
 C:\Users\savasta\projects\Checklist_project\Backend\src\main\java\com\example\db\Version.java
 C:\Users\savasta\projects\Checklist_project\Backend\src\main\java\com\example\db\ChecklistDAO.java
-C:\Users\savasta\projects\Checklist_project\Backend\src\main\java\com\example\auth\LDAPAuthenticator.java
-C:\Users\savasta\projects\Checklist_project\Backend\src\main\java\com\example\auth\User.java
+C:\Users\savasta\projects\Checklist_project\Backend\src\main\java\com\example\api\EmailController.java
 C:\Users\savasta\projects\Checklist_project\Backend\src\main\java\com\example\api\ChecklistController.java
 C:\Users\savasta\projects\Checklist_project\Backend\src\main\java\com\example\App.java
 C:\Users\savasta\projects\Checklist_project\Backend\src\main\java\com\example\db\ChecklistItem.java
-C:\Users\savasta\projects\Checklist_project\Backend\src\main\java\com\example\api\AuthController.java
 C:\Users\savasta\projects\Checklist_project\Backend\src\main\java\com\example\db\DatabaseConnector.java
-C:\Users\savasta\projects\Checklist_project\Backend\src\main\java\com\example\auth\Authenticator.java
-C:\Users\savasta\projects\Checklist_project\Backend\src\main\java\com\example\auth\LDAPConfig.java

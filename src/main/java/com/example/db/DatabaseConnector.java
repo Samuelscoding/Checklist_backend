@@ -4,11 +4,15 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import io.github.cdimascio.dotenv.Dotenv;
+
 public class DatabaseConnector {
+
+    static Dotenv dotenv = Dotenv.configure().ignoreIfMissing().load();
     
-    private static final String JDBC_URL = "jdbc:postgresql://localhost:5432/Checklist_db";
-    private static final String USERNAME = "postgres";
-    private static final String PASSWORD = "postgres";
+    private static final String JDBC_URL = dotenv.get("DB_URL"); 
+    private static final String USERNAME = dotenv.get("DB_USERNAME");
+    private static final String PASSWORD = dotenv.get("DB_PASSWORD");
 
     public static Connection getConnection() throws SQLException {
         try {
