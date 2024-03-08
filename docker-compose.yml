@@ -16,6 +16,22 @@ services:
       checklist_net:
         ipv4_address: 10.5.0.5
 
+  node-app:
+    build: C:\Users\savasta\projects\Checklist_project\Backend_ldap
+    ports:
+      - "3001:3001"
+    networks:
+      checklist_net:
+        ipv4_address: 10.5.0.8
+
+  nuxt-frontend:
+    build: C:\Users\savasta\projects\Checklist_project\Frontend
+    ports:
+      - "3000:3000"
+    networks:
+      checklist_net:
+        ipv4_address: 10.5.0.9
+
   db:
     image: postgres
     restart: always

@@ -1,9 +1,0 @@
-Mögliche Suchleiste, um Aufgaben besser zu finden
-
-Automatische Vervollständigung 
-
-Darkmode-Funktion muss eingebaut werden
-
-Calls über Nuxt proxien -> DELETE funktioniert noch nicht
-
-Admin kann nach Personen und Abteilungen filtern, User nicht
