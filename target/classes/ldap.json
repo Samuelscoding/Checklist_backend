@@ -1,7 +1,0 @@
-{
-    "username": "IT-AD_READ@asctech.de",
-    "password": "read_AD",
-    "url": "ldap://secureldap.asctech.de:636/",
-    "filter": "(&(objectClass=user)(mail=<user>))",
-    "searchName": "dc=asctech,dc=de"
-  }

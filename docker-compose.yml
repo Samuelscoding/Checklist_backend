@@ -1,9 +1,8 @@
 version: '3.8'
 
 services:
-  app-build:
-    build: .
-    image: javalin-app:latest
+  pep-checklist_backend:
+    image: pep-checklist_backend
     ports:
       - "5500:5500"
     environment:
@@ -16,18 +15,18 @@ services:
       checklist_net:
         ipv4_address: 10.5.0.5
 
-  node-app:
-    build: C:\Users\savasta\projects\Checklist_project\Backend_ldap
+  pep-checklist_ldap:
+    image: pep-checklist_ldap
     ports:
-      - "3001:3001"
+      - "3004:3004"
     networks:
       checklist_net:
         ipv4_address: 10.5.0.8
 
-  nuxt-frontend:
-    build: C:\Users\savasta\projects\Checklist_project\Frontend
+  pep-checklist_frontend:
+    image: pep-checklist_frontend
     ports:
-      - "3000:3000"
+      - "3005:3005"
     networks:
       checklist_net:
         ipv4_address: 10.5.0.9

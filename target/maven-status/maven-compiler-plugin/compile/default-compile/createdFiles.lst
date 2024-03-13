@@ -3,7 +3,6 @@ com\example\api\ChecklistController.class
 com\example\db\DatabaseConnector.class
 com\example\App.class
 com\example\api\ChecklistController$ImportChecklistRequest.class
-com\example\api\EmailController$1.class
 com\example\db\Version.class
 com\example\db\ChecklistItem.class
 com\example\db\ChecklistDAO.class
