@@ -61,7 +61,7 @@ public class ChecklistController {
                     System.out.println("Subject: " + subject);
                     System.out.println("Body: " + body);
         
-                    EmailController.sendEmail(to, subject, body);
+                    EmailController.sendEmail("pep-check@asc.de", to, subject, body);
         
                     ctx.status(200).result("Reminder email sent successfully");
                 } catch(Exception e) {
