@@ -30,6 +30,9 @@ services:
     networks:
       checklist_net:
         ipv4_address: 10.5.0.9
+    depends_on:
+      - pep-checklist_ldap
+      - pep-checklist_backend
 
   db:
     image: postgres
@@ -45,15 +48,6 @@ services:
     networks:
       checklist_net:
         ipv4_address: 10.5.0.6
-
-  adminer:
-    image: adminer
-    restart: always
-    ports:
-      - 8080:5432
-    networks:
-      checklist_net:
-        ipv4_address: 10.5.0.7
 
 networks:
   checklist_net:
